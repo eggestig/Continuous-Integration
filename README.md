@@ -36,11 +36,11 @@ $ export JAVA_HOME=`/usr/libexec/java_home -v 11.0`
 ## Build
 To build, you need to cd into the my-app folder and run mvn. However the pom.xml settings file for Maven is outside this folder, so it's recommended to use the following command while located in the project root (i.e. DD2480):
 ```
-(cd my-app && mvn --batch-mode --update-snapshots verify)
+(cd my-app && mvn assembly:assembly --batch-mode --update-snapshots verify)
 ```
 
 ## Run
 To run the project, like above with building, we recommend being in the project root folder and run the following command:
 ```
-(cd my-app/ && java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App)
+(cd my-app/ && java -jar target/my-app-1.0-SNAPSHOT-jar-with-dependencies.jar)
 ```
