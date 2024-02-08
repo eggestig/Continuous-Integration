@@ -19,4 +19,5 @@ buildNumber.properties
 *.jar
 ngrok
 *.zip
-.env
+.envtempRepo/
+.vscode/
