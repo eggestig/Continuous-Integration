@@ -30,6 +30,10 @@ import org.eclipse.jgit.transport.SshTransport;
 import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHCommitState;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.Session;
@@ -83,9 +87,8 @@ public class App extends AbstractHandler {
                     ", pushed to branch: " + pushedBranch);
 
             // System.out.println("Received GitHub push event: " + payload);
-            setCommitStatus(jsonNode);
         }
-
+        
         // Respond with a 200 OK status
         // here you do all the continuous integration tasks
         // for example
@@ -103,8 +106,13 @@ public class App extends AbstractHandler {
         }
         // 2nd compile the code with mvn
         response.setStatus(HttpServletResponse.SC_OK);
+        
+        String state = projectBuilder(System.getProperty("user.dir"));
+        
+        if ("push".equals(eventType)) {
+            setCommitStatus(jsonNode, state);
+        }
 
-        projectBuilder(System.getProperty("user.dir"));
 
         response.getWriter().println("CI job done");
 
@@ -118,7 +126,7 @@ public class App extends AbstractHandler {
         }
     }
 
-    public void setCommitStatus(JsonNode payload) {
+    public void setCommitStatus(JsonNode payload, String state) {
         try {
             // Make sure to run before: "export AUTH_TOKEN="<insert_tok>""
             String token = System.getenv("AUTH_TOKEN");
@@ -139,7 +147,10 @@ public class App extends AbstractHandler {
             String targetUrl = payload.path("head_commit").path("url").asText();
 
             GHRepository repository = github.getRepository(owner + "/" + repoName);
-            repository.createCommitStatus(sha1, GHCommitState.SUCCESS, targetUrl, description);
+            repository.createCommitStatus(sha1,
+                                state.equals("SUCCESS") ? GHCommitState.SUCCESS : GHCommitState.FAILURE,
+                                targetUrl,
+                                description);
 
             System.out.println("Commit status updated successfully.");
         } catch (Exception e) {
