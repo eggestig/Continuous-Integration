@@ -39,6 +39,8 @@ To build, you need to cd into the my-app folder and run mvn. However the pom.xml
 (cd my-app && mvn assembly:assembly --batch-mode --update-snapshots verify)
 ```
 
+test
+
 ## Run
 To run the project, like above with building, we recommend being in the project root folder and run the following command:
 ```
