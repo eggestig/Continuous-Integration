@@ -44,3 +44,6 @@ To run the project, like above with building, we recommend being in the project 
 ```
 (cd my-app/ && java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App)
 ```
+
+
+Testtest
