@@ -111,6 +111,8 @@ public class App extends AbstractHandler {
         
         if ("push".equals(eventType)) {
             setCommitStatus(jsonNode, state);
+        } else {
+            System.out.println("NO PUSH");
         }
 
 
