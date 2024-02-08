@@ -42,6 +42,7 @@ To build, you need to cd into the my-app folder and run mvn. However the pom.xml
 test#1
 test#2
 test#3
+test#4
 
 ## Run
 To run the project, like above with building, we recommend being in the project root folder and run the following command:
