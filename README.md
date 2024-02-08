@@ -43,6 +43,7 @@ test#1
 test#2
 test#3
 test#4
+test#5
 
 ## Run
 To run the project, like above with building, we recommend being in the project root folder and run the following command:
