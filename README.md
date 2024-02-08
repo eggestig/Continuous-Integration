@@ -56,5 +56,3 @@ To run the project, like above with building, we recommend being in the project 
 
 #### GitHub CLI installation
 brew install gh
-
-test
