@@ -1,11 +1,17 @@
 package com.mycompany.app;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.http.HttpStatus;
@@ -58,6 +64,24 @@ public class AppTest
         server.join();
     }
 
+    /**
+     * Test that the helper method captureOutput
+     * captures the correct console output for a given input.
+     */
+    @Test
+    public void testCaptureOutput() throws IOException {
+
+        String input = "[INFO] Scanning for projects...\n[INFO] BUILD FAILURE\n[INFO] Total time:  0.033 s";
+        InputStream inputStream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
+
+        String output = App.captureOutput(inputStream);
+
+        String expectedOutput = "[INFO] Scanning for projects..." + System.lineSeparator() +
+                                "[INFO] BUILD FAILURE" + System.lineSeparator() +
+                                "[INFO] Total time:  0.033 s" + System.lineSeparator();
+
+        assertEquals(expectedOutput, output);
+    }
     /**
      * Test correctly cloned repo
      */

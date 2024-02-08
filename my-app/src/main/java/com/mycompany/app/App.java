@@ -8,7 +8,13 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
@@ -82,8 +88,6 @@ public class App extends AbstractHandler
         }
 
         // Respond with a 200 OK status
-        response.setStatus(HttpServletResponse.SC_OK);
-
         // here you do all the continuous integration tasks
         // for example
         // 1st clone your repository
@@ -99,7 +103,56 @@ public class App extends AbstractHandler
             e.printStackTrace();
         }
         // 2nd compile the code with mvn
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        projectBuilder(System.getProperty("user.dir"));
+
         response.getWriter().println("CI job done");
+    }
+
+    public static String projectBuilder(String path){
+       
+        String buildResult = "";
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[]{"mvn", "package"}); 
+            processBuilder.directory(new java.io.File(path));
+            Process commandRunner = processBuilder.start();
+
+            String output = captureOutput(commandRunner.getInputStream());
+            int exitCode = commandRunner.waitFor();
+
+            System.out.println("Captured Output:\n" + output);
+            System.out.println("Exit Code: " + exitCode);
+
+            if (output.contains("BUILD SUCCESS")) {
+                buildResult = "SUCCESS";
+
+            } else if (output.contains("BUILD FAILURE")){
+                buildResult = "FAILURE";
+            }
+
+        } catch (IOException | InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        System.out.println(buildResult);
+        return buildResult;
+
+    }
+
+    public static String captureOutput(InputStream inputStream) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            StringBuilder output = new StringBuilder();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append(System.lineSeparator());
+            }
+
+            return output.toString();
+        }
     }
  
     // used to start the CI server in command line
