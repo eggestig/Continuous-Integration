@@ -3,6 +3,7 @@ package com.mycompany.app;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -41,7 +42,7 @@ import com.jcraft.jsch.Session;
 public class App extends AbstractHandler
 {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String CloneDirectoryPath = "../" + System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
+    private static final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
 
     private JsonNode jsonNode;
 
@@ -102,10 +103,11 @@ public class App extends AbstractHandler
             System.out.println("Exception occurred while cloning repo");
             e.printStackTrace();
         }
+
         // 2nd compile the code with mvn
         response.setStatus(HttpServletResponse.SC_OK);
 
-        projectBuilder(System.getProperty("user.dir"));
+        projectBuilder(CloneDirectoryPath);
 
         response.getWriter().println("CI job done");
     }
@@ -115,8 +117,11 @@ public class App extends AbstractHandler
         String buildResult = "";
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(new String[]{"mvn", "package"}); 
-            processBuilder.directory(new java.io.File(path));
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[] {"mvn", "package"});
+            for(Map.Entry<String, String> entry : processBuilder.environment().entrySet()) {
+                System.out.println(entry.getKey() + " | " + entry.getValue());
+            }
+            processBuilder.directory(new java.io.File(path + "/my-app/"));
             Process commandRunner = processBuilder.start();
 
             String output = captureOutput(commandRunner.getInputStream());

@@ -69,8 +69,8 @@ public class AppTest
      * captures the correct console output for a given input.
      */
     @Test
-    public void testCaptureOutput() throws IOException {
-
+    public void testCaptureOutput() throws IOException, GitAPIException {
+        App.cloneRepo(URI, Branch);
         String input = "[INFO] Scanning for projects...\n[INFO] BUILD FAILURE\n[INFO] Total time:  0.033 s";
         InputStream inputStream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
 
