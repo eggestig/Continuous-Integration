@@ -35,6 +35,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.Session;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 /** 
  Skeleton of a ContinuousIntegrationServer which acts as webhook
  See the Jetty documentation for API documentation of those classes.
@@ -98,16 +100,16 @@ public class App extends AbstractHandler
                 System.out.println(repoURI);
                 System.out.flush();
                 cloneRepo(repoURI, "assessment");
+
+                // 2nd compile the code with mvn
+                response.setStatus(HttpServletResponse.SC_OK);
+        
+                projectBuilder(CloneDirectoryPath);
             }
         } catch(GitAPIException e) {
             System.out.println("Exception occurred while cloning repo");
             e.printStackTrace();
         }
-
-        // 2nd compile the code with mvn
-        response.setStatus(HttpServletResponse.SC_OK);
-
-        projectBuilder(CloneDirectoryPath);
 
         response.getWriter().println("CI job done");
     }
@@ -164,7 +166,10 @@ public class App extends AbstractHandler
     public static void main(String[] args) throws Exception
     {
         System.out.println("Hello World!");
-        Server server = new Server(8080);
+        Dotenv dotenv = Dotenv.load();
+        int port = Integer.parseInt(dotenv.get("PORT")); // 0 if tempRepo, 8080 if main
+        
+        Server server = new Server(port);
         server.setHandler(new App()); 
         server.start();
         server.join();
