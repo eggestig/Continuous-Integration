@@ -43,6 +43,19 @@ public class AppTest
     {
         assertTrue( true );
     }
+    
+    /**
+     * Test correctly cloned repo
+     */
+    @Test
+    public void testClonedRepo() throws GitAPIException, IOException {
+        App.cloneRepo(URI, Branch);
+
+        FileRepositoryBuilder repo = new FileRepositoryBuilder()
+            .findGitDir(new File(CloneDirectoryPath + "/.git"));
+
+        assertTrue("Cloned Git Repo exists", repo.getGitDir() != null);
+    }
 
     /**
      * Test connection to server
@@ -84,18 +97,6 @@ public class AppTest
                                 "[INFO] Total time:  0.033 s" + System.lineSeparator();
 
         assertEquals(expectedOutput, output);
-    }
-    /**
-     * Test correctly cloned repo
-     */
-    @Test
-    public void testClonedRepo() throws GitAPIException, IOException {
-        App.cloneRepo(URI, Branch);
-
-        FileRepositoryBuilder repo = new FileRepositoryBuilder()
-            .findGitDir(new File(CloneDirectoryPath + "/.git"));
-
-        assertTrue("Cloned Git Repo exists", repo.getGitDir() != null);
     }
 
     /**
