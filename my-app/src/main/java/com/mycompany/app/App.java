@@ -3,6 +3,7 @@ package com.mycompany.app;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -34,6 +35,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.Session;
 
+import io.github.cdimascio.dotenv.Dotenv;
+import io.github.cdimascio.dotenv.DotenvException;
+
 /** 
  Skeleton of a ContinuousIntegrationServer which acts as webhook
  See the Jetty documentation for API documentation of those classes.
@@ -41,7 +45,7 @@ import com.jcraft.jsch.Session;
 public class App extends AbstractHandler
 {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String CloneDirectoryPath = "../" + System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
+    private static final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
 
     private JsonNode jsonNode;
 
@@ -94,29 +98,33 @@ public class App extends AbstractHandler
         try {
             if ("push".equals(eventType)) {
                 String repoURI = jsonNode.path("repository").path("clone_url").asText();
-                System.out.println(repoURI);
+                String branch = jsonNode.path("ref").asText();
+                System.out.println(repoURI + "/" + branch);
                 System.out.flush();
-                cloneRepo(repoURI, "assessment");
+                cloneRepo(repoURI, branch);
+
+                // 2nd compile the code with mvn
+                response.setStatus(HttpServletResponse.SC_OK);
+        
+                projectBuilder(CloneDirectoryPath);
             }
         } catch(GitAPIException e) {
             System.out.println("Exception occurred while cloning repo");
             e.printStackTrace();
         }
-        // 2nd compile the code with mvn
-        response.setStatus(HttpServletResponse.SC_OK);
-
-        projectBuilder(System.getProperty("user.dir"));
 
         response.getWriter().println("CI job done");
     }
 
     public static String projectBuilder(String path){
-       
         String buildResult = "";
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(new String[]{"mvn", "package"}); 
-            processBuilder.directory(new java.io.File(path));
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[] {"mvn", "package"});
+            for(Map.Entry<String, String> entry : processBuilder.environment().entrySet()) {
+                System.out.println(entry.getKey() + " | " + entry.getValue());
+            }
+            processBuilder.directory(new java.io.File(path + "/my-app/"));
             Process commandRunner = processBuilder.start();
 
             String output = captureOutput(commandRunner.getInputStream());
@@ -159,7 +167,15 @@ public class App extends AbstractHandler
     public static void main(String[] args) throws Exception
     {
         System.out.println("Hello World!");
-        Server server = new Server(8080);
+        int port = 0;
+        Dotenv dotenv = Dotenv.load();
+        System.out.println(dotenv.get("PORT"));
+        port = dotenv.get("PORT").compareTo("8080") == 0 ? 8080 : 0;
+
+
+        System.out.println("Try to run on port: " + port + " from directory: " + System.getProperty("user.dir"));
+        
+        Server server = new Server(port);
         server.setHandler(new App()); 
         server.start();
         server.join();
