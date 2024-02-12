@@ -111,10 +111,15 @@ public class App extends AbstractHandler
                 response.setStatus(HttpServletResponse.SC_OK);
         
                 // Build project
-                projectBuilder(CloneDirectoryPath);
+                String status = projectBuilder(CloneDirectoryPath); // Returns 'SUCCESS' or 'FAILURE'
                 
                 // Set commit status
-                setCommitStatus(jsonNode, "SUCCESS");
+                if(status.compareTo("SUCCESS") == 0) {
+                    setCommitStatus(jsonNode, "SUCCESS");
+                } else {
+                    setCommitStatus(jsonNode, "FAILURE");
+                }
+                
             }
         } catch(GitAPIException e) {
             System.out.println("Exception occurred while cloning repo");
@@ -182,7 +187,7 @@ public class App extends AbstractHandler
 
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(new String[] { "mvn", "package" });
-            processBuilder.directory(new java.io.File(path));
+            processBuilder.directory(new java.io.File(path + "/my-app"));
             Process commandRunner = processBuilder.start();
 
             String output = captureOutput(commandRunner.getInputStream());

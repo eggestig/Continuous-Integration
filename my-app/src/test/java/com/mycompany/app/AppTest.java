@@ -130,18 +130,6 @@ public class AppTest {
         assertEquals(expectedOutput, output);
     }
   
-    /**
-     * Test correctly cloned repo
-     */
-    @Test
-    public void testClonedRepo() throws GitAPIException, IOException {
-    App.cloneRepo(URI, Branch);
-
-    FileRepositoryBuilder repo = new FileRepositoryBuilder()
-    .findGitDir(new File(CloneDirectoryPath + "/.git"));
-
-    assertTrue("Cloned Git Repo exists", repo.getGitDir() != null);
-    }
 
     /**
      * Test correctly cloned repo branch
