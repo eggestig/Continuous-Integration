@@ -168,6 +168,8 @@ public class App extends AbstractHandler
         System.out.println("Hello World!");
         Dotenv dotenv = Dotenv.load();
         int port = Integer.parseInt(dotenv.get("PORT")); // 0 if tempRepo, 8080 if main
+
+        System.out.println("PORT: " + dotenv.get("PORT") + " | Int PORT: " + port);
         
         Server server = new Server(port);
         server.setHandler(new App()); 
