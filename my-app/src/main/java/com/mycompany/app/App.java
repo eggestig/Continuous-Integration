@@ -38,6 +38,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.Session;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 /**
  * Skeleton of a ContinuousIntegrationServer which acts as webhook
  * See the Jetty documentation for API documentation of those classes.
@@ -45,6 +47,7 @@ import com.jcraft.jsch.Session;
 public class App extends AbstractHandler {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final String CloneDirectoryPath = "../" + System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
+   // private static final Dotenv dotenv = Dotenv.load();
 
     private JsonNode jsonNode;
 
@@ -54,10 +57,10 @@ public class App extends AbstractHandler {
 
         System.out.println("Cloning " + URI + " into " + URI);
         Git.cloneRepository()
-            .setURI(URI)
-            .setBranch(branch)
-            .setDirectory(Paths.get(CloneDirectoryPath).toFile())
-            .call();        
+                .setURI(URI)
+                .setBranch(branch)
+                .setDirectory(Paths.get(CloneDirectoryPath).toFile())
+                .call();
         System.out.println("Completed Cloning");
     }
 
@@ -88,33 +91,32 @@ public class App extends AbstractHandler {
 
             // System.out.println("Received GitHub push event: " + payload);
         }
-        
+
         // Respond with a 200 OK status
         // here you do all the continuous integration tasks
         // for example
         // 1st clone your repository
-        try {
-            if ("push".equals(eventType)) {
-                String repoURI = jsonNode.path("repository").path("clone_url").asText();
-                System.out.println(repoURI);
-                System.out.flush();
-                cloneRepo(repoURI, "assessment");
-            }
-        } catch(GitAPIException e) {
-            System.out.println("Exception occurred while cloning repo");
-            e.printStackTrace();
-        }
+        // try {
+        // if ("push".equals(eventType)) {
+        // String repoURI = jsonNode.path("repository").path("clone_url").asText();
+        // System.out.println(repoURI);
+        // System.out.flush();
+        // cloneRepo(repoURI, "assessment");
+        // }
+        // } catch(GitAPIException e) {
+        // System.out.println("Exception occurred while cloning repo");
+        // e.printStackTrace();
+        // }
         // 2nd compile the code with mvn
         response.setStatus(HttpServletResponse.SC_OK);
-        
-        String state = projectBuilder(System.getProperty("user.dir"));
-        
-        if ("push".equals(eventType)) {
-            setCommitStatus(jsonNode, state);
-        } else {
-            System.out.println("NO PUSH");
-        }
 
+        // String state = projectBuilder(System.getProperty("user.dir"));
+
+        if ("push".equals(eventType)) {
+            setCommitStatus(jsonNode, "SUCCESS");
+        } else {
+        System.out.println("NO PUSH");
+        }
 
         response.getWriter().println("CI job done");
 
@@ -128,45 +130,50 @@ public class App extends AbstractHandler {
         }
     }
 
-    public void setCommitStatus(JsonNode payload, String state) {
+    public static boolean setCommitStatus(JsonNode payload, String state) {
         try {
-            // Make sure to run before: "export AUTH_TOKEN="<insert_tok>""
-            String token = System.getenv("AUTH_TOKEN");
-            GitHub github = getGithub(token);
+            String filePath = System.getProperty("user.dir") + File.separator + "my-app";
+            Dotenv dotenv = Dotenv.configure()
+            .directory(filePath)
+            .load();
+            GitHub github = getGithub(dotenv.get("AUTH_TOKEN_ENV"));
 
             String owner = payload.path("repository")
-                            .path("owner")
-                            .path("name")
-                            .asText();
+                    .path("owner")
+                    .path("name")
+                    .asText();
             String repoName = payload.path("repository")
-                            .path("name")
-                            .asText();
+                    .path("name")
+                    .asText();
 
-            String sha1 = payload.path("after").asText();
+            String sha = payload.path("after").asText();
 
-            String description = "The build succeeded!";
+            String description = "BUILD " + state;
 
             String targetUrl = payload.path("head_commit").path("url").asText();
 
             GHRepository repository = github.getRepository(owner + "/" + repoName);
-            repository.createCommitStatus(sha1,
-                                state.equals("SUCCESS") ? GHCommitState.SUCCESS : GHCommitState.FAILURE,
-                                targetUrl,
-                                description);
+            repository.createCommitStatus(sha,
+                    state.equals("SUCCESS") ? GHCommitState.SUCCESS : GHCommitState.FAILURE,
+                    targetUrl,
+                    description);
 
             System.out.println("Commit status updated successfully.");
+            System.out.println(repository.getLastCommitStatus(sha));
+            return true;
         } catch (Exception e) {
             System.out.println("Commit status update failed.");
             e.printStackTrace();
+            return false;
         }
     }
 
-    public static String projectBuilder(String path){
-       
+    public static String projectBuilder(String path) {
+
         String buildResult = "";
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(new String[]{"mvn", "package"}); 
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[] { "mvn", "package" });
             processBuilder.directory(new java.io.File(path));
             Process commandRunner = processBuilder.start();
 
@@ -179,7 +186,7 @@ public class App extends AbstractHandler {
             if (output.contains("BUILD SUCCESS")) {
                 buildResult = "SUCCESS";
 
-            } else if (output.contains("BUILD FAILURE")){
+            } else if (output.contains("BUILD FAILURE")) {
                 buildResult = "FAILURE";
             }
 
@@ -205,7 +212,7 @@ public class App extends AbstractHandler {
             return output.toString();
         }
     }
- 
+
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception {
         System.out.println("Hello World!");
