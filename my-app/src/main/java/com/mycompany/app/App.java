@@ -31,11 +31,16 @@ import org.eclipse.jgit.transport.SshTransport;
 import org.eclipse.jgit.transport.Transport;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GHCommitState;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.Session;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.kubernetes.client.openapi.apis.StorageApi;
 import io.github.cdimascio.dotenv.DotenvException;
 
 /** 
@@ -55,19 +60,18 @@ public class App extends AbstractHandler
 
         System.out.println("Cloning " + URI + " into " + URI);
         Git.cloneRepository()
-            .setURI(URI)
-            .setBranch(branch)
-            .setDirectory(Paths.get(CloneDirectoryPath).toFile())
-            .call();        
+                .setURI(URI)
+                .setBranch(branch)
+                .setDirectory(Paths.get(CloneDirectoryPath).toFile())
+                .call();
         System.out.println("Completed Cloning");
     }
 
     public void handle(String target,
-                       Request baseRequest,
-                       HttpServletRequest request,
-                       HttpServletResponse response) 
-        throws IOException, ServletException
-    {
+            Request baseRequest,
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
@@ -88,7 +92,7 @@ public class App extends AbstractHandler
             System.out.println("Received GitHub push event for repository: " + repositoryName +
                     ", pushed to branch: " + pushedBranch);
 
-            //System.out.println("Received GitHub push event: " + payload);
+            // System.out.println("Received GitHub push event: " + payload);
         }
 
         // Respond with a 200 OK status
@@ -106,7 +110,11 @@ public class App extends AbstractHandler
                 // 2nd compile the code with mvn
                 response.setStatus(HttpServletResponse.SC_OK);
         
+                // Build project
                 projectBuilder(CloneDirectoryPath);
+                
+                // Set commit status
+                setCommitStatus(jsonNode, "SUCCESS");
             }
         } catch(GitAPIException e) {
             System.out.println("Exception occurred while cloning repo");
@@ -114,17 +122,67 @@ public class App extends AbstractHandler
         }
 
         response.getWriter().println("CI job done");
+
+    }
+    
+    private static GitHub getGithub(final String token) {
+        try {
+            return GitHub.connectUsingOAuth("https://api.github.com", token);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static String projectBuilder(String path){
+    public static boolean setCommitStatus(JsonNode payload, String state) {
+        try {
+            String filePath = System.getProperty("user.dir"); // Sometimes need to add 'my-app' to the path
+            // String filePath = System.getProperty("user.dir") + File.separator + "my-app";
+            Dotenv dotenv = Dotenv.configure()
+            .directory(filePath)
+            .load();
+            System.out.println("Token: " + dotenv.get("AUTH_TOKEN_ENV"));
+            GitHub github = getGithub(dotenv.get("AUTH_TOKEN_ENV"));
+            System.out.println(github);
+
+            String owner = payload.path("repository")
+                    .path("owner")
+                    .path("name")
+                    .asText();
+            String repoName = payload.path("repository")
+                    .path("name")
+                    .asText();
+
+            String sha = payload.path("after").asText();
+
+            String description = "BUILD " + state;
+
+            String targetUrl = payload.path("head_commit").path("url").asText();
+
+            GHRepository repository = github.getRepository(owner + "/" + repoName);
+            repository.createCommitStatus(sha,
+                    state.equals("SUCCESS") ? GHCommitState.SUCCESS : GHCommitState.FAILURE,
+                    targetUrl,
+                    description);
+
+            System.out.println("Commit status updated successfully.");
+            System.out.println(repository.getLastCommitStatus(sha));
+            System.out.flush();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Commit status update failed.");
+            e.printStackTrace();
+            System.out.flush();
+            return false;
+        }
+    }
+
+    public static String projectBuilder(String path) {
+
         String buildResult = "";
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(new String[] {"mvn", "package"});
-            for(Map.Entry<String, String> entry : processBuilder.environment().entrySet()) {
-                System.out.println(entry.getKey() + " | " + entry.getValue());
-            }
-            processBuilder.directory(new java.io.File(path + "/my-app/"));
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[] { "mvn", "package" });
+            processBuilder.directory(new java.io.File(path));
             Process commandRunner = processBuilder.start();
 
             String output = captureOutput(commandRunner.getInputStream());
@@ -136,7 +194,7 @@ public class App extends AbstractHandler
             if (output.contains("BUILD SUCCESS")) {
                 buildResult = "SUCCESS";
 
-            } else if (output.contains("BUILD FAILURE")){
+            } else if (output.contains("BUILD FAILURE")) {
                 buildResult = "FAILURE";
             }
 
@@ -162,10 +220,9 @@ public class App extends AbstractHandler
             return output.toString();
         }
     }
- 
+
     // used to start the CI server in command line
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
         System.out.println("Hello World!");
         int port = 0;
         Dotenv dotenv = Dotenv.load();
