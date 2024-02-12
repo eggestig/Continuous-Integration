@@ -39,6 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.Session;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.kubernetes.client.openapi.apis.StorageApi;
 
 /**
  * Skeleton of a ContinuousIntegrationServer which acts as webhook
@@ -132,11 +133,14 @@ public class App extends AbstractHandler {
 
     public static boolean setCommitStatus(JsonNode payload, String state) {
         try {
-            String filePath = System.getProperty("user.dir") + File.separator + "my-app";
+            String filePath = System.getProperty("user.dir"); // Sometimes need to add 'my-app' to the path
+            // String filePath = System.getProperty("user.dir") + File.separator + "my-app";
             Dotenv dotenv = Dotenv.configure()
             .directory(filePath)
             .load();
+            System.out.println("Token: " + dotenv.get("AUTH_TOKEN_ENV"));
             GitHub github = getGithub(dotenv.get("AUTH_TOKEN_ENV"));
+            System.out.println(github);
 
             String owner = payload.path("repository")
                     .path("owner")
@@ -160,10 +164,12 @@ public class App extends AbstractHandler {
 
             System.out.println("Commit status updated successfully.");
             System.out.println(repository.getLastCommitStatus(sha));
+            System.out.flush();
             return true;
         } catch (Exception e) {
             System.out.println("Commit status update failed.");
             e.printStackTrace();
+            System.out.flush();
             return false;
         }
     }

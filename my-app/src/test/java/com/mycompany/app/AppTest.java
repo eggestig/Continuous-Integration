@@ -39,7 +39,7 @@ import io.github.cdimascio.dotenv.Dotenv;
  */
 public class AppTest {
     private final String URI = "https://github.com/eggestig/Continuous-Integration.git";
-    private final String CloneDirectoryPath = "../" + System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
+    private final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
     private final String Branch = "assessment";
 
     /**
@@ -55,7 +55,7 @@ public class AppTest {
      */
     @Test
     public void test_setCommitStatus_returns_true_for_valid_payload() throws IOException {
-        String filePath = System.getProperty("user.dir") + File.separator + "my-app/src/test/java/com/mycompany/app/testJson.txt";
+        String filePath = System.getProperty("user.dir") + File.separator + "src/test/java/com/mycompany/app/testJson.txt";
         String payload = new String(Files.readAllBytes(Paths.get(filePath)));
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(payload);
@@ -65,7 +65,7 @@ public class AppTest {
 
     @Test
     public void test_auth_token_returns_true_for_valid_token() throws Exception {
-        String filePath = System.getProperty("user.dir") + File.separator + "my-app";
+        String filePath = System.getProperty("user.dir");
         Dotenv dotenv = Dotenv.configure()
         .directory(filePath)
         .load();
