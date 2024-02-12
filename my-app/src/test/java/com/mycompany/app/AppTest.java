@@ -1,29 +1,23 @@
 package com.mycompany.app;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
-import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import org.eclipse.jgit.transport.URIish;
 import org.junit.Test;
 
 
@@ -34,7 +28,7 @@ public class AppTest
 {
     private final String URI = "https://github.com/eggestig/Continuous-Integration.git";
     private final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
-    private final String Branch = "assessment";
+    private final String Branch = "testBranch-17-2";
     /**
      * Rigorous Test :-)
      */
@@ -43,7 +37,7 @@ public class AppTest
     {
         assertTrue( true );
     }
-    
+
     /**
      * Test correctly cloned repo
      */
