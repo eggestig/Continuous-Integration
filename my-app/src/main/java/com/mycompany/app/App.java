@@ -36,6 +36,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.Session;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.github.cdimascio.dotenv.DotenvException;
 
 /** 
  Skeleton of a ContinuousIntegrationServer which acts as webhook
@@ -166,10 +167,13 @@ public class App extends AbstractHandler
     public static void main(String[] args) throws Exception
     {
         System.out.println("Hello World!");
+        int port = 0;
         Dotenv dotenv = Dotenv.load();
-        int port = Integer.parseInt(dotenv.get("PORT")); // 0 if tempRepo, 8080 if main
+        System.out.println(dotenv.get("PORT"));
+        port = dotenv.get("PORT").compareTo("8080") == 0 ? 8080 : 0;
 
-        System.out.println("PORT: " + dotenv.get("PORT") + " | Int PORT: " + port);
+
+        System.out.println("Try to run on port: " + port + " from directory: " + System.getProperty("user.dir"));
         
         Server server = new Server(port);
         server.setHandler(new App()); 
