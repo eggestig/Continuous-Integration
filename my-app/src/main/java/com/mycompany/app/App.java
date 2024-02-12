@@ -1,47 +1,32 @@
 package com.mycompany.app;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Paths;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
-import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.transport.JschConfigSessionFactory;
-import org.eclipse.jgit.transport.OpenSshConfig.Host;
-import org.eclipse.jgit.transport.SshSessionFactory;
-import org.eclipse.jgit.transport.SshTransport;
-import org.eclipse.jgit.transport.Transport;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-
-import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GHCommitState;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jcraft.jsch.Session;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import io.kubernetes.client.openapi.apis.StorageApi;
-import io.github.cdimascio.dotenv.DotenvException;
 
 /** 
  Skeleton of a ContinuousIntegrationServer which acts as webhook
@@ -57,14 +42,43 @@ public class App extends AbstractHandler
     public static void cloneRepo(String URI, String branch) throws GitAPIException, IOException {
         System.out.println("Deleting directory " + URI + "...");
         FileUtils.deleteDirectory(new File(CloneDirectoryPath));
-
-        System.out.println("Cloning " + URI + " into " + URI);
+        System.out.println("Directory deleted!");
+        System.out.println("Cloning " + URI + " into " + CloneDirectoryPath + "...");
         Git.cloneRepository()
                 .setURI(URI)
                 .setBranch(branch)
                 .setDirectory(Paths.get(CloneDirectoryPath).toFile())
                 .call();
-        System.out.println("Completed Cloning");
+        System.out.println("Cloning completed!");
+        
+        System.out.println("Creating skeleton .env file");
+        // Create file
+        try {
+            File myObj = new File(CloneDirectoryPath + "/my-app/.env");
+            if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        // Write to created file
+        String filePath = System.getProperty("user.dir");
+        Dotenv dotenv = Dotenv.configure()
+            .directory(filePath)
+            .load();
+
+        try {
+            FileWriter myWriter = new FileWriter(CloneDirectoryPath + "/my-app/.env");
+            myWriter.write("AUTH_TOKEN_ENV=\"" + dotenv.get("AUTH_TOKEN_ENV") + "\"\nPORT=0");
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     public void handle(String target,
