@@ -98,9 +98,10 @@ public class App extends AbstractHandler
         try {
             if ("push".equals(eventType)) {
                 String repoURI = jsonNode.path("repository").path("clone_url").asText();
-                System.out.println(repoURI);
+                String branch = jsonNode.path("ref").asText();
+                System.out.println(repoURI + "/" + branch);
                 System.out.flush();
-                cloneRepo(repoURI, "assessment");
+                cloneRepo(repoURI, branch);
 
                 // 2nd compile the code with mvn
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -116,7 +117,6 @@ public class App extends AbstractHandler
     }
 
     public static String projectBuilder(String path){
-       
         String buildResult = "";
 
         try {
