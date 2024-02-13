@@ -21,3 +21,4 @@ ngrok
 *.zip
 tempRepo/
 .vscode/
+my-app/.env
