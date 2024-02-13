@@ -69,6 +69,10 @@ brew install gh
 ### Robin Eggestig
 
 ### Anton Sederlin
+- Implemented the base functionality of requirements P1 and P2, i.e. enuring that the CI server compile, build and test the branch where the most recent commit was made, the commit that triggered the webHook (current push event).
+- Implemented logic for receiving and parsing the incoming webHook payload.
+- Created tests for the auto-build/test methods.
+- Performed extensive debugging and refractoring. 
 
 ### Tsz Ho Wat
 
