@@ -23,7 +23,6 @@ public class ReserveHistory {
 
     /**
      * Set the PrintWriter for generating HTML content.
-     * 
      * @param o PrintWriter object.
      */
     public static void generateHtmlContent(PrintWriter o) {

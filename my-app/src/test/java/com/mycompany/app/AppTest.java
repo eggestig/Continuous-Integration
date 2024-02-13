@@ -33,6 +33,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * Unit test for simple App.
+ * 
  */
 public class AppTest {
     private final String URI = "https://github.com/eggestig/Continuous-Integration.git";
