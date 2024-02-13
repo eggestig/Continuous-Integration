@@ -60,3 +60,20 @@ To run the project, like above with building, we recommend being in the project 
 
 #### GitHub CLI installation
 brew install gh
+
+
+## Statement of Contributions
+
+### Henrik Åkesson
+
+### Robin Eggestig
+
+### Anton Sederlin
+
+### Tsz Ho Wat
+
+### Robert Skoglund
+- Pair-programmed notification feature and setCommit function with Henrik
+- Extensive debugging to read authentication token successfully, including dependency management
+- Developed unit tests for successful reading of authentication as well as changes to commit status unit test
+- Completed progress of team assessment with regards to states checklist
