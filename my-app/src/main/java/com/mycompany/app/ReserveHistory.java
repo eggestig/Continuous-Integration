@@ -11,6 +11,10 @@ import java.util.Arrays;
 public class ReserveHistory {
     public static String path = "../my-app/src/main/java/com/mycompany/app/";
     private static PrintWriter out;
+
+    /*
+     * set PrintWriter
+     */
     public static void generateHtmlContent(PrintWriter o) {
         out = o;
     }
@@ -35,11 +39,18 @@ public class ReserveHistory {
         }
     }
 
+    /*
+     * Read the html file with "commits/commit" + commitName
+     * @param commitName filename
+     */
     public static void serveCommitContent(String commitName) {
         String commitFilePath = path + "commits/commit" + commitName + ".html";
         generateHtmlFromFile(commitFilePath);
     }
     
+    /*
+     * generate the error page
+     */
     public static void generateErrorPage(){
         out.println("<!DOCTYPE html>");
         out.println("<html>");
@@ -53,6 +64,9 @@ public class ReserveHistory {
         out.println("</html>");
     }
 
+    /*
+     * show the main page in web
+     */
     public static void showAllCommit() {
         File commitsDir = new File(path + "commits");
         File[] commitFiles = commitsDir.listFiles();
@@ -91,6 +105,13 @@ public class ReserveHistory {
         return new File(filePath).exists();
     }
 
+    /*
+     * generate html file with given info
+     * 
+     * @param ID commit id
+     * @param time commit time
+     * @param buildLog build log
+     */
     public static void writeJsonToHtml(String ID, String time, String buildLog) {
         try {
 
