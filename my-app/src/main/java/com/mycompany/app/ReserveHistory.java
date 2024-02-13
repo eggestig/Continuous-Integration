@@ -8,20 +8,30 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
+
+/**
+ * Class for managing commit history and generating HTML content with commit
+ * information.
+ */
 public class ReserveHistory {
     public static String path = "../my-app/src/main/java/com/mycompany/app/";
     private static PrintWriter out;
 
-    /*
-     * set PrintWriter
+
+    /**
+     * Set the PrintWriter for generating HTML content.
+     * @param o PrintWriter object.
+
      */
     public static void generateHtmlContent(PrintWriter o) {
         out = o;
     }
-    
-    /*
-     * from a html file generate content of web
-     * return false if file path do not exist
+
+
+    /**
+     * Generate HTML content from a file.
+     * 
+     * @param s Path to the HTML file.
      */
     public static boolean generateHtmlFromFile(String s) {
         try {
@@ -39,9 +49,11 @@ public class ReserveHistory {
         }
     }
 
-    /*
-     * Read the html file with "commits/commit" + commitName
-     * @param commitName filename
+
+    /**
+     * Serve commit content by generating HTML from a commit file.
+     * 
+     * @param commitName Name of the commit.
      */
     public static void serveCommitContent(String commitName) {
         String commitFilePath = path + "commits/commit" + commitName + ".html";
@@ -64,30 +76,31 @@ public class ReserveHistory {
         out.println("</html>");
     }
 
-    /*
-     * show the main page in web
+    /**
+     * Show all commits by generating HTML content with links to each commit.
      */
     public static void showAllCommit() {
         File commitsDir = new File(path + "commits");
         File[] commitFiles = commitsDir.listFiles();
-    
+
         out.println("<html>");
         out.println("<head><title>All Commits</title></head>");
         out.println("<body>");
         out.println("<h1>All Commits</h1>");
+
     
         if (commitFiles != null && commitFiles.length > 0) {
             Arrays.sort(commitFiles);
-    
+
             for (File commitFile : commitFiles) {
                 if (commitFile.isFile() && commitFile.getName().endsWith(".html")) {
                     // Extract commit number from the file name
                     String fileName = commitFile.getName();
                     String commitNumberStr = fileName.replaceAll("[^0-9]", "");
-                    
+
                     if (!commitNumberStr.isEmpty()) {
                         int commitNumber = Integer.parseInt(commitNumberStr);
-    
+
                         // Provide a link to each commit
                         out.println("<p><a href=\"/commit" + commitNumber + "\">Commit " + commitNumber + "</a></p>");
                     }
@@ -96,21 +109,24 @@ public class ReserveHistory {
         } else {
             out.println("<p>No commits found.</p>");
         }
-    
+
         out.println("</body>");
         out.println("</html>");
     }
+
 
     private static boolean fileExists(String filePath) {
         return new File(filePath).exists();
     }
 
-    /*
-     * generate html file with given info
+
+    /**
+     * Write JSON node content to an HTML file.
      * 
-     * @param ID commit id
-     * @param time commit time
-     * @param buildLog build log
+     * @param ID       Commit ID.
+     * @param time     Timestamp.
+     * @param buildLog Build log content.
+
      */
     public static void writeJsonToHtml(String ID, String time, String buildLog) {
         try {
@@ -155,7 +171,4 @@ public class ReserveHistory {
             e.printStackTrace();
         }
     }
-
-    
-    
 }

@@ -32,8 +32,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+
 /**
  * Unit test for simple App.
+ * 
  */
 public class AppTest {
     private final String URI = "https://github.com/eggestig/Continuous-Integration.git";
@@ -42,15 +44,16 @@ public class AppTest {
 
     private final String BuildSuccessDirectoryPath = System.getProperty("user.dir") + "/../testBuildSuccess";
     private final String BuildFailDirectoryPath = System.getProperty("user.dir") + "/../testBuildFailure";
-    private static final String BUILD_SUCCESS = "BUILD SUCCESS";
-    private static final String BUILD_FAILURE = "BUILD FAILURE";
 
     /**
-     * Test commit status for pre-defined JSON Node
+     * Test setting commit status for a valid payload.
+     * 
+     * @throws IOException
      */
     @Test
     public void test_setCommitStatus_returns_true_for_valid_payload() throws IOException {
-        String filePath = System.getProperty("user.dir") + File.separator + "src/test/java/com/mycompany/app/testJson.txt";
+        String filePath = System.getProperty("user.dir") + File.separator
+                + "src/test/java/com/mycompany/app/testJson.txt";
         String payload = new String(Files.readAllBytes(Paths.get(filePath)));
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(payload);
@@ -58,45 +61,54 @@ public class AppTest {
         assertTrue(App.setCommitStatus(jsonNode, GHCommitState.SUCCESS, "TEST", "TEST"));
     }
 
+    /**
+     * Test authentication token retrieval for a valid token.
+     * 
+     * @throws Exception
+     */
     @Test
     public void test_auth_token_returns_true_for_valid_token() throws Exception {
         String filePath = System.getProperty("user.dir");
         Dotenv dotenv = Dotenv.configure()
-        .directory(filePath)
-        .load();
-        
+                .directory(filePath)
+                .load();
+
         String token = dotenv.get("AUTH_TOKEN_ENV");
         assertTrue(token != null);
     }
-    
+
     /**
-     * Test correctly cloned repo
+     * Test cloning a repository.
+     * 
+     * @throws GitAPIException
+     * @throws IOException
      */
     @Test
     public void testClonedRepo() throws GitAPIException, IOException {
         App.cloneRepo(URI, Branch);
 
         FileRepositoryBuilder repo = new FileRepositoryBuilder()
-            .findGitDir(new File(CloneDirectoryPath + "/.git"));
+                .findGitDir(new File(CloneDirectoryPath + "/.git"));
 
         assertTrue("Cloned Git Repo exists", repo.getGitDir() != null);
     }
 
     /**
-     * Test connection to server
+     * Test connection to server.
+     * 
+     * @throws Exception
      */
     @Test
-    public void testConnection() throws Exception
-    {
+    public void testConnection() throws Exception {
         Random random = new Random();
-        int port = 49152 + random.nextInt(1000); //49152 - 50151
+        int port = 49152 + random.nextInt(1000); // 49152 - 50151
         // Start server
         Server server = new Server(port);
-        server.setHandler(new App()); 
+        server.setHandler(new App());
         server.start();
 
         // Test connection
-        HttpURLConnection http = (HttpURLConnection)new URL("http://localhost:" + port + "/").openConnection();
+        HttpURLConnection http = (HttpURLConnection) new URL("http://localhost:" + port + "/").openConnection();
         http.connect();
         assertTrue("Response Code", http.getResponseCode() == HttpStatus.OK_200);
 
@@ -106,8 +118,10 @@ public class AppTest {
     }
 
     /**
-     * Test that the helper method captureOutput
-     * captures the correct console output for a given input.
+     * Test the captureOutput method to ensure correct console output capture.
+     * 
+     * @throws IOException
+     * @throws GitAPIException
      */
     @Test
     public void testCaptureOutput() throws IOException, GitAPIException {
@@ -123,29 +137,31 @@ public class AppTest {
 
         assertEquals(expectedOutput, output);
     }
-  
 
     /**
-     * Test correctly cloned repo branch
+     * Test checking out a specific branch of a cloned repository.
+     * 
+     * @throws GitAPIException
+     * @throws IOException
      */
     @Test
     public void testClonedRepoBranch() throws GitAPIException, IOException {
-    App.cloneRepo(URI, Branch);
+        App.cloneRepo(URI, Branch);
 
-    Repository repo = new FileRepositoryBuilder()
-    .setGitDir(new File(CloneDirectoryPath + "/.git"))
-    .readEnvironment()
-    .findGitDir()
-    .build();
+        Repository repo = new FileRepositoryBuilder()
+                .setGitDir(new File(CloneDirectoryPath + "/.git"))
+                .readEnvironment()
+                .findGitDir()
+                .build();
 
-    try (Git git = new Git(repo)) {
-        assertTrue("Cloned repo branch exists, and is valid",
-        Branch.equals(git.getRepository().getBranch()));
-    }
+        try (Git git = new Git(repo)) {
+            assertTrue("Cloned repo branch exists, and is valid",
+                    Branch.equals(git.getRepository().getBranch()));
+        }
     }
 
     /**
-     * Tests the projectBuilder method on a buildable maven skeleton project 
+     * Tests the projectBuilder method on a buildable maven skeleton project
      * found under Continuos_Integration/testBuildSuccess
      */
     @Test
@@ -154,8 +170,8 @@ public class AppTest {
         assertEquals("Test successful build", buildResult, GHCommitState.SUCCESS);
     }
 
-     /**
-     * Tests the projectBuilder method on a none buildable maven skeleton project 
+    /**
+     * Tests the projectBuilder method on a none buildable maven skeleton project
      * found under Continuos_Integration/testBuildFailure
      */
     @Test
@@ -165,7 +181,7 @@ public class AppTest {
     }
 
     /**
-     * Tests the projectTester method on a buildable maven skeleton project 
+     * Tests the projectTester method on a buildable maven skeleton project
      * found under Continuos_Integration/testBuildSuccess
      */
     @Test
@@ -174,8 +190,8 @@ public class AppTest {
         assertEquals("Test successful tester", testResult, GHCommitState.SUCCESS);
     }
 
-     /**
-     * Tests the projectTester method on a none buildable maven skeleton project 
+    /**
+     * Tests the projectTester method on a none buildable maven skeleton project
      * found under Continuos_Integration/testBuildFailure
      */
     @Test
@@ -183,9 +199,9 @@ public class AppTest {
         GHCommitState testResult = App.projectTester(BuildFailDirectoryPath);
         assertEquals("Test unsuccessful tester", testResult, GHCommitState.FAILURE);
     }
-    
+
     /**
-     * Tests the projectAssembler method on a buildable maven skeleton project 
+     * Tests the projectAssembler method on a buildable maven skeleton project
      * found under Continuos_Integration/testBuildSuccess
      */
     @Test
@@ -195,8 +211,8 @@ public class AppTest {
         assertEquals("Test successful assembler", assembleResult, GHCommitState.SUCCESS);
     }
 
-     /**
-     * Tests the projectAssembler method on a none buildable maven skeleton project 
+    /**
+     * Tests the projectAssembler method on a none buildable maven skeleton project
      * found under Continuos_Integration/testBuildFailure
      */
     @Test
