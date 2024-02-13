@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Commit 0 Page</title>
+</head>
+<body>
+    <h2>Commit 0</h2>
+    <p>INITIAL COMMIT</p>
+    <p>This content is served by the Jetty server at http://localhost:8080/commit0.</p>
+</body>
+</html>

@@ -81,6 +81,9 @@ public class App extends AbstractHandler
             
                 // Set commit status
                 setCommitStatus(jsonNode, status);
+
+                //Write the JSON content to a file
+                ReserveHistory.writeJsonToFile(jsonNode);
                 
             } catch (GitAPIException | IOException e) {
                 System.out.println("Exception occurred while cloning repo");

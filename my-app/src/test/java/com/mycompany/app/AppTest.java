@@ -164,4 +164,8 @@ public class AppTest {
         String buildResult = App.projectBuilder(BuildFailDirectoryPath);
         assertEquals("Test unsuccessful build", buildResult, BUILD_FAILURE);
     }
+
+    //TO DO: add test get json file
+    //To do: add test convert file to html
+    //to-do: add test make sure it is right in website
 }
