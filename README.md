@@ -1,5 +1,9 @@
 # Continuous-Integration
 
+## Progress of Team Assessment
+
+Achieved state: performing - the team is working effectively and efficiently. The team is working effectively in a cohesive unit, organizing productive work sessions where we code and discuss issues collaboratively. The communication is open - maintaining communication on Discord channels outside the work sessions and otherwise verbally together and continuously addresses problems without outside help. The team is committed to achieve the features listed in the grading criteria - distributing the workload by feature in the form of issues on GitHub. Effective progress is continually being made with little wasted work and back-tracking a result of our open communication. To meet the next state, adjourned, team responsibilities need to be completely fulfilled with no further effort needed. The state can only be achieved after four assignments - which is when we have no further obligation to collaborate or be available since our mission is done.
+
 ## Installation
 
 Clone the repo and install maven/java and set you java version to 11.0 if not already done so. You can check with the mvn -V command once you've installed maven.
