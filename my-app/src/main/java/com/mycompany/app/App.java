@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -38,7 +40,6 @@ public class App extends AbstractHandler
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
     private static final String BUILD_SUCCESS = "BUILD SUCCESS";
-    private static final String BUILD_FAILURE = "BUILD FAILURE";
 
     public void handle(String target,
             Request baseRequest,
@@ -71,15 +72,36 @@ public class App extends AbstractHandler
             System.out.println(repoURI + "/" + pushedBranch);
 
             try {
+                
+                // Set commit status
+                setCommitStatus(jsonNode, GHCommitState.PENDING, "BUILDING...");
 
                 //Clone repo to local directory
                 cloneRepo(repoURI, pushedBranch);
 
                 // Run mvn package on the project
-                String status = projectBuilder(CloneDirectoryPath); // Returns 'BUILD SUCCESS' or 'BUILD FAILURE'
+                GHCommitState packageStatus = projectBuilder(CloneDirectoryPath); // Returns 'BUILD SUCCESS' or 'BUILD FAILURE'
             
                 // Set commit status
-                setCommitStatus(jsonNode, status);
+                setCommitStatus(jsonNode, packageStatus, "BUILD: " + packageStatus);
+                
+                // Delayed commit status
+                delayedPending(jsonNode, "TESTING...", 10_000);
+
+                // Run mvn test on the project
+                GHCommitState testStatus = projectTester(CloneDirectoryPath);
+
+                // Set commit status
+                setCommitStatus(jsonNode, testStatus, "TEST: " + testStatus);
+                
+                // Delayed commit status
+                delayedPending(jsonNode, "ASSEMBLING...", 10_000);
+
+                // Run mvn assembly on the project
+                GHCommitState assembleStatus = projectAssembler(CloneDirectoryPath);
+
+                // Set commit status
+                setCommitStatus(jsonNode, assembleStatus, "ASSEMBLE: " + testStatus);
                 
             } catch (GitAPIException | IOException e) {
                 System.out.println("Exception occurred while cloning repo");
@@ -132,12 +154,12 @@ public class App extends AbstractHandler
         }
     }
 
-    public static String projectBuilder(String path) {
+    public static GHCommitState projectBuilder(String path) {
 
-        String buildResult = "";
+        GHCommitState buildResult = GHCommitState.FAILURE;
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(new String[] { "mvn", "package" });
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[] { "mvn", "clean", "package" });
             processBuilder.directory(new java.io.File(path + "/my-app"));
             Process commandRunner = processBuilder.start();
 
@@ -148,10 +170,7 @@ public class App extends AbstractHandler
             System.out.println("Exit Code: " + exitCode);
 
             if (output.contains(BUILD_SUCCESS)) {
-                buildResult = BUILD_SUCCESS;
-
-            } else if (output.contains(BUILD_FAILURE)) {
-                buildResult = BUILD_FAILURE;
+                buildResult = GHCommitState.SUCCESS;
             }
 
         } catch (IOException | InterruptedException e) {
@@ -175,7 +194,7 @@ public class App extends AbstractHandler
         }
     }
 
-    public static boolean setCommitStatus(JsonNode payload, String state) {
+    public static boolean setCommitStatus(JsonNode payload, GHCommitState state, String description) {
         try {
             String filePath = System.getProperty("user.dir"); // Sometimes need to add 'my-app' to the path
             // String filePath = System.getProperty("user.dir") + File.separator + "my-app";
@@ -195,17 +214,15 @@ public class App extends AbstractHandler
 
             String sha = payload.path("after").asText();
 
-            String description = state;
-
             String targetUrl = payload.path("head_commit").path("url").asText();
 
             GHRepository repository = github.getRepository(owner + "/" + repoName);
             repository.createCommitStatus(sha,
-                    state.equals(BUILD_SUCCESS) ? GHCommitState.SUCCESS : GHCommitState.FAILURE,
+                    state,
                     targetUrl,
                     description);
 
-            System.out.println("Commit status updated successfully.");
+            System.out.println("Commit status updated successfully: '" + description + "'");
             System.out.println(repository.getLastCommitStatus(sha));
             System.out.flush();
             return true;
@@ -223,6 +240,80 @@ public class App extends AbstractHandler
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static GHCommitState projectTester(String path) {
+
+        GHCommitState buildResult = GHCommitState.FAILURE;
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[] { "mvn", "clean", "test" });
+            processBuilder.directory(new java.io.File(path + "/my-app"));
+            Process commandRunner = processBuilder.start();
+
+            String output = captureOutput(commandRunner.getInputStream());
+            int exitCode = commandRunner.waitFor();
+
+            System.out.println("Captured Output:\n" + output);
+            System.out.println("Exit Code: " + exitCode);
+
+            // Build fails if atleast one test fails
+            if (output.contains(BUILD_SUCCESS)) {
+                buildResult = GHCommitState.SUCCESS;
+
+            }
+
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Something went wrong when testing the project");
+            e.printStackTrace();
+        }
+
+        System.out.println(buildResult);
+        return buildResult;
+    }
+
+    public static GHCommitState projectAssembler(String path) {
+
+        GHCommitState buildResult = GHCommitState.FAILURE;
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(new String[] { "mvn", "assembly:assembly", "--batch-mode", "--update-snapshots", "verify" });
+            processBuilder.directory(new java.io.File(path + "/my-app"));
+            Process commandRunner = processBuilder.start();
+
+            String output = captureOutput(commandRunner.getInputStream());
+            int exitCode = commandRunner.waitFor();
+
+            System.out.println("Captured Output:\n" + output);
+            System.out.println("Exit Code: " + exitCode);
+
+            // Build fails if atleast one test fails
+            if (output.contains(BUILD_SUCCESS)) {
+                buildResult = GHCommitState.SUCCESS;
+            }
+
+        } catch (IOException | InterruptedException e) {
+            System.out.println("Something went wrong when assembling the project");
+            e.printStackTrace();
+        }
+
+        System.out.println("ASSEMBLE RESULT: " + buildResult);
+        return buildResult;
+    }
+
+    public static void delayedPending(JsonNode jsonNode, String description, int msDelay) {
+        Timer t = new java.util.Timer();
+        t.schedule( 
+            new java.util.TimerTask() {
+                @Override
+                public void run() {
+                    // Set commit status
+                    setCommitStatus(jsonNode, GHCommitState.PENDING, description);
+                    t.cancel();
+                }
+            }, 
+            msDelay 
+        );
     }
 
     // used to start the CI server in command line
