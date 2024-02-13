@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -48,6 +46,16 @@ public class App extends AbstractHandler
     
     private static String buildLog = "";
     
+    /**
+     * Handles the incoming HTTP request.
+     * 
+     * @param target The target of the request.
+     * @param baseRequest The base request object.
+     * @param request The HTTP servlet request.
+     * @param response The HTTP servlet response.
+     * @throws IOException
+     * @throws ServletException
+     */
     public void handle(String target,
             Request baseRequest,
             HttpServletRequest request,
@@ -128,7 +136,13 @@ public class App extends AbstractHandler
         response.getWriter().println("CI job done");
         
     }
-
+    /**
+     * Clones the repository specified by URI and branch to a local directory.
+     * @param URI
+     * @param branch
+     * @throws GitAPIException
+     * @throws IOException
+     */
     public static void cloneRepo(String URI, String branch) throws GitAPIException, IOException {
         System.out.println("Deleting directory " + URI + "...");
         FileUtils.deleteDirectory(new File(CloneDirectoryPath));
@@ -171,7 +185,11 @@ public class App extends AbstractHandler
             e.printStackTrace();
         }
     }
-
+    /**
+     * Builds the Maven project located at the specified path.
+     * @param path The path to the Maven project.
+     * @return The build status of the project.
+     */
     public static GHCommitState projectBuilder(String path) {
 
         GHCommitState buildResult = GHCommitState.FAILURE;
@@ -201,6 +219,13 @@ public class App extends AbstractHandler
         return buildResult;
     }
 
+    /**
+     * Captures the output from an input stream and returns it as a string.
+     * 
+     * @param inputStream The input stream to capture output from.
+     * @return The captured output as a string.
+     * @throws IOException If an I/O error occurs.
+     */
     public static String captureOutput(InputStream inputStream) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             StringBuilder output = new StringBuilder();
@@ -213,6 +238,15 @@ public class App extends AbstractHandler
         }
     }
 
+    /**
+     * Sets the commit status on GitHub.
+     * 
+     * @param payload     The JSON payload received from the webhook.
+     * @param state       The state of the commit (e.g., pending, success, failure).
+     * @param description The description of the commit status.
+     * @param context     The context of the commit status (e.g., build, test, assembly).
+     * @return True if the commit status was successfully updated, false otherwise.
+     */
     public static boolean setCommitStatus(JsonNode payload, GHCommitState state, String description, String context) {
         try {
             String filePath = System.getProperty("user.dir"); // Sometimes need to add 'my-app' to the path
@@ -254,6 +288,12 @@ public class App extends AbstractHandler
         }
     }
 
+    /**
+     * Retrieves a GitHub instance using the provided authentication token.
+     * 
+     * @param token The GitHub authentication token.
+     * @return A GitHub instance.
+     */
     private static GitHub getGithub(final String token) {
         try {
             return GitHub.connectUsingOAuth("https://api.github.com", token);
@@ -262,6 +302,12 @@ public class App extends AbstractHandler
         }
     }
 
+    /**
+     * Tests the Maven project by running the tests.
+     * 
+     * @param path The path to the Maven project.
+     * @return The test status of the project.
+     */
     public static GHCommitState projectTester(String path) {
 
         GHCommitState buildResult = GHCommitState.FAILURE;
@@ -292,6 +338,12 @@ public class App extends AbstractHandler
         return buildResult;
     }
 
+    /**
+     * Assembles the Maven project.
+     * 
+     * @param path The path to the Maven project.
+     * @return The assembly status of the project.
+     */
     public static GHCommitState projectAssembler(String path) {
 
         GHCommitState buildResult = GHCommitState.FAILURE;
@@ -321,7 +373,12 @@ public class App extends AbstractHandler
         return buildResult;
     }
 
-    // used to start the CI server in command line
+    /**
+     * Starts the Continuous Integration (CI) server.
+     * 
+     * @param args The command-line arguments.
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         System.out.println("Waiting for a push event to trigger the Github webHook...");
         int port = 0;
