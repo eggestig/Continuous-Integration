@@ -124,8 +124,6 @@ public class App extends AbstractHandler
             String fileName = target.substring("/commit".length());
             ReserveHistory.serveCommitContent(fileName);
         }else ReserveHistory.generateErrorPage();
-
-        response.getWriter().println("CI job done");
         
     }
 
