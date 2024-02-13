@@ -1,5 +1,25 @@
 # Continuous-Integration
 
+## Project Description
+
+The project implements a small continuous integration CI server. This CI server has only the core features of continuous integration. The core CI features implemented are the following:
+
+#### Core CI feature #1 - compilation
+
+The CI server supports compiling the project, a static syntax check performed for languages without compiler. Compilation is triggered as webhook, the CI server compiles the branch where the change has been made, as specified in the HTTP payload.
+
+#### Core CI feature #2 - testing
+
+The CI server supports executing the automated tests of the project. Testing is triggered as webhook, on the branch where the change has been made, as specified in the HTTP payload.
+
+#### Core CI feature #3 - notification
+
+The CI server supports notification of CI results by setting commit status. The CI server sets the commit status on the repository.
+
+#### Core CI feature #4 - history
+
+The CI server keeps the history of the past builds. This history persists even if the server is rebooted. Each build is given a unique URL, that is accessible to get the build information (commit identifier, build date, build logs). One URL exists to list all builds.
+
 ## Progress of Team Assessment
 
 Achieved state: performing - the team is working effectively and efficiently. The team is working effectively in a cohesive unit, organizing productive work sessions where we code and discuss issues collaboratively. The communication is open - maintaining communication on Discord channels outside the work sessions and otherwise verbally together and continuously addresses problems without outside help. The team is committed to achieve the features listed in the grading criteria - distributing the workload by feature in the form of issues on GitHub. Effective progress is continually being made with little wasted work and back-tracking a result of our open communication. To meet the next state, adjourned, team responsibilities need to be completely fulfilled with no further effort needed. The state can only be achieved after four assignments - which is when we have no further obligation to collaborate or be available since our mission is done.
