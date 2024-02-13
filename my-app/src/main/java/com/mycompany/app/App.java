@@ -41,6 +41,11 @@ public class App extends AbstractHandler
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
     private static final String BUILD_SUCCESS = "BUILD SUCCESS";
+    
+    private static final String CONTEXT_BUILD = "BUILD";
+    private static final String CONTEXT_TEST = "TEST";
+    private static final String CONTEXT_ASSEMBLY = "ASSEMBLY";
+    
     private static String buildLog = "";
     
     public void handle(String target,
@@ -77,31 +82,23 @@ public class App extends AbstractHandler
 
             try {
                 
-                // Set commit status
-                setCommitStatus(jsonNode, GHCommitState.PENDING, "BUILDING...");
+                // Set initial pending statuses
+                setCommitStatus(jsonNode, GHCommitState.PENDING, "BUILDING...", CONTEXT_BUILD);
+                setCommitStatus(jsonNode, GHCommitState.PENDING, "ASSEMBLING...", CONTEXT_ASSEMBLY);
+                setCommitStatus(jsonNode, GHCommitState.PENDING, "TESTING...", CONTEXT_TEST);
 
                 //Clone repo to local directory
                 cloneRepo(repoURI, pushedBranch);
 
-                // Run mvn package on the project
+                // BUILD
                 GHCommitState packageStatus = projectBuilder(CloneDirectoryPath); // Returns 'BUILD SUCCESS' or 'BUILD FAILURE'
-            
-                // Set commit status
-                setCommitStatus(jsonNode, packageStatus, "BUILD: " + packageStatus);
-                
-                // Delayed commit status
-                delayedPending(jsonNode, "TESTING...", 10_000);
+                setCommitStatus(jsonNode, packageStatus, "BUILD: " + packageStatus, CONTEXT_BUILD);
 
-                // Run mvn test on the project
+                // TEST
                 GHCommitState testStatus = projectTester(CloneDirectoryPath);
+                setCommitStatus(jsonNode, testStatus, "TEST: " + testStatus, CONTEXT_TEST);
 
-                // Set commit status
-                setCommitStatus(jsonNode, testStatus, "TEST: " + testStatus);
-                
-                // Delayed commit status
-                delayedPending(jsonNode, "ASSEMBLING...", 10_000);
-
-                // Run mvn assembly on the project
+                // ASSEMBLE
                 GHCommitState assembleStatus = projectAssembler(CloneDirectoryPath);
 
                 // Set commit status
@@ -216,7 +213,7 @@ public class App extends AbstractHandler
         }
     }
 
-    public static boolean setCommitStatus(JsonNode payload, GHCommitState state, String description) {
+    public static boolean setCommitStatus(JsonNode payload, GHCommitState state, String description, String context) {
         try {
             String filePath = System.getProperty("user.dir"); // Sometimes need to add 'my-app' to the path
             // String filePath = System.getProperty("user.dir") + File.separator + "my-app";
@@ -242,7 +239,8 @@ public class App extends AbstractHandler
             repository.createCommitStatus(sha,
                     state,
                     targetUrl,
-                    description);
+                    description,
+                    context);
 
             System.out.println("Commit status updated successfully: '" + description + "'");
             System.out.println(repository.getLastCommitStatus(sha));
@@ -321,21 +319,6 @@ public class App extends AbstractHandler
 
         System.out.println("ASSEMBLE RESULT: " + buildResult);
         return buildResult;
-    }
-
-    public static void delayedPending(JsonNode jsonNode, String description, int msDelay) {
-        Timer t = new java.util.Timer();
-        t.schedule( 
-            new java.util.TimerTask() {
-                @Override
-                public void run() {
-                    // Set commit status
-                    setCommitStatus(jsonNode, GHCommitState.PENDING, description);
-                    t.cancel();
-                }
-            }, 
-            msDelay 
-        );
     }
 
     // used to start the CI server in command line
