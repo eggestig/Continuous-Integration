@@ -53,7 +53,7 @@ public class AppTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(payload);
 
-        assertTrue(App.setCommitStatus(jsonNode, GHCommitState.SUCCESS, "TEST"));
+        assertTrue(App.setCommitStatus(jsonNode, GHCommitState.SUCCESS, "TEST", "TEST"));
     }
 
     @Test
