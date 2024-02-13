@@ -147,10 +147,10 @@ public class App extends AbstractHandler
             System.out.println("Captured Output:\n" + output);
             System.out.println("Exit Code: " + exitCode);
 
-            if (output.contains("BUILD_SUCCESS")) {
+            if (output.contains(BUILD_SUCCESS)) {
                 buildResult = BUILD_SUCCESS;
 
-            } else if (output.contains("BUILD_FAILURE")) {
+            } else if (output.contains(BUILD_FAILURE)) {
                 buildResult = BUILD_FAILURE;
             }
 
