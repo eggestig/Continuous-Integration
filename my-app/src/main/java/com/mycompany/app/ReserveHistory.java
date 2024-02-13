@@ -37,12 +37,12 @@ public class ReserveHistory {
         }
     }
     public static void serveCommitContent(String commitName) {
-        String commitFilePath = path + "commits/commit" + commitName + ".txt";
+        String commitFilePath = path + "commits/commit" + commitName + ".html";
         generateHtmlFromFile(commitFilePath);
     }
     
     public static void generateErrorPage(){
-        generateHtmlFromFile(path + "error.txt");
+        generateHtmlFromFile(path + "error.html");
     }
     public static void showAllCommit() {
         File commitsDir = new File(path + "commits");
@@ -57,7 +57,7 @@ public class ReserveHistory {
             Arrays.sort(commitFiles);
     
             for (File commitFile : commitFiles) {
-                if (commitFile.isFile() && commitFile.getName().endsWith(".txt")) {
+                if (commitFile.isFile() && commitFile.getName().endsWith(".html")) {
                     // Extract commit number from the file name
                     String fileName = commitFile.getName();
                     String commitNumberStr = fileName.replaceAll("[^0-9]", "");
@@ -104,36 +104,51 @@ public class ReserveHistory {
             e.printStackTrace();
         }
     }
+    private static boolean fileExists(String filePath) {
+        return new File(filePath).exists();
+    }
 
-    // public static void writeJsonToHtml(JsonNode jsonNode) {
-    //     try {
-    //         // Create a unique identifier (using timestamp in this example)
-    //         String timestamp = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(Calendar.getInstance().getTime());
-    //         String uniqueFileName = "commit_" + timestamp + ".html";
+    public static void writeJsonToHtml(String ID, String time, String status, String buildLog) {
+        try {
 
-    //         // Define the file path
-    //         String filePath = path + "commits/" + uniqueFileName;
+            int fileNum = 1;
 
-    //         // Create PrintWriter to write HTML content to the file
-    //         PrintWriter writer = new PrintWriter(new FileWriter(filePath));
+            while (fileExists(path + "commits/commit" + fileNum + ".html")) {
+                fileNum++;
+            }
 
-    //         // Write HTML content to the file
-    //         writer.println("<html>");
-    //         writer.println("<head><title>JSON Content</title></head>");
-    //         writer.println("<body>");
-    //         writer.println("<pre>");
-    //         writer.println(jsonNode.toPrettyString());
-    //         writer.println("</pre>");
-    //         writer.println("</body>");
-    //         writer.println("</html>");
+            // Define the file path
+            String fileName = "commit" + fileNum + ".html";
+            String filePath = path + "commits/" + fileName;
 
-    //         // Close the PrintWriter
-    //         writer.close();
+            // Create PrintWriter to write HTML content to the file
+            PrintWriter writer = new PrintWriter(new FileWriter(filePath));
 
-    //         System.out.println("HTML file generated from JSON content: " + filePath);
-    //     } catch (IOException e) {
-    //         System.out.println("Exception occurred while generating HTML file from JSON");
-    //         e.printStackTrace();
-    //     }
-   // }
+            // Write HTML content to the file
+            writer.println("<html>");
+            writer.println("<head><title>Commit Details</title></head>");
+            writer.println("<body>");
+            writer.println("<p>Commit ID: " + ID + "</p>");
+            writer.println("<p>Timestamp: " + time + "</p>");
+            writer.println("<p>status:</p>");
+            writer.println("<pre>");
+            writer.println(status);
+            writer.println("</pre>");
+            writer.println("<p>Build Log:</p>");
+            writer.println("<pre>");
+            writer.println(buildLog);
+            writer.println("</pre>");
+            writer.println("</body>");
+            writer.println("</html>");
+
+            // Close the PrintWriter
+            writer.close();
+
+            System.out.println("HTML file generated: " + filePath);
+        } catch (IOException e) {
+            System.out.println("Exception occurred while generating HTML file");
+            e.printStackTrace();
+        }
+    }
+    
 }

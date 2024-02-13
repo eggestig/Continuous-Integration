@@ -1,0 +1,472 @@
+<html>
+<head><title>Commit Details</title></head>
+<body>
+<p>Commit ID: 35186b04e85c9049f8f3b31dcf22df845d0fe202</p>
+<p>Timestamp: 2024-02-13T13:40:59+01:00</p>
+<p>status:</p>
+<pre>
+BUILD SUCCESS
+</pre>
+<p>Build Log:</p>
+<pre>
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------------< [0;36mcom.mycompany.app:my-app[0;1m >----------------------[m
+[[1;34mINFO[m] [1mBuilding my-app 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:resources[m [1m(default-resources)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.0:compile[m [1m(default-compile)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:2.6:testResources[m [1m(default-testResources)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.0:testCompile[m [1m(default-testCompile)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:2.12.4:test[m [1m(default-test)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Surefire report directory: /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.mycompany.app.AppTest
+Captured Output:
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------------< [0;36mcom.mycompany.app:my-app[0;1m >----------------------[m
+[[1;34mINFO[m] [1mBuilding my-app 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.0.2:resources[m [1m(default-resources)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildFailure/my-app/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.0:compile[m [1m(default-compile)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildFailure/my-app/target/classes
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;31mERROR[m] COMPILATION ERROR : 
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;31mERROR[m] /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildFailure/my-app/src/main/java/com/mycompany/app/App.java:[11,32] ')' expected
+[[1;31mERROR[m] /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildFailure/my-app/src/main/java/com/mycompany/app/App.java:[11,44] ';' expected
+[[1;34mINFO[m] 2 errors 
+[[1;34mINFO[m] -------------------------------------------------------------
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;31mBUILD FAILURE[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  0.742 s
+[[1;34mINFO[m] Finished at: 2024-02-13T13:41:10+01:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;31mERROR[m] Failed to execute goal [32morg.apache.maven.plugins:maven-compiler-plugin:3.8.0:compile[m [1m(default-compile)[m on project [36mmy-app[m: [1;31mCompilation failure[m: Compilation failure: 
+[[1;31mERROR[m] /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildFailure/my-app/src/main/java/com/mycompany/app/App.java:[11,32] ')' expected
+[[1;31mERROR[m] /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildFailure/my-app/src/main/java/com/mycompany/app/App.java:[11,44] ';' expected
+[[1;31mERROR[m] -> [1m[Help 1][m
+[[1;31mERROR[m] 
+[[1;31mERROR[m] To see the full stack trace of the errors, re-run Maven with the [1m-e[m switch.
+[[1;31mERROR[m] Re-run Maven using the [1m-X[m switch to enable full debug logging.
+[[1;31mERROR[m] 
+[[1;31mERROR[m] For more information about the errors and possible solutions, please read the following articles:
+[[1;31mERROR[m] [1m[Help 1][m http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+
+Exit Code: 1
+BUILD FAILURE
+13:41:10.299 [main] INFO org.eclipse.jetty.util.log - Logging to Logger[org.eclipse.jetty.util.log] via org.eclipse.jetty.util.log.Slf4jLog
+13:41:10.303 [main] DEBUG org.eclipse.jetty.util.log - Container org.eclipse.jetty.server.Server@6166e06f + SelectChannelConnector@0.0.0.0:49386 as connector
+13:41:10.439 [main] DEBUG org.eclipse.jetty.util.log - Container org.eclipse.jetty.server.Server@6166e06f + App@1165b38 as handler
+13:41:10.439 [main] DEBUG org.eclipse.jetty.util.log - Starting org.eclipse.jetty.server.Server@6166e06f
+13:41:10.439 [main] INFO org.eclipse.jetty.util.log - jetty-7.0.2.v20100331
+13:41:10.448 [main] DEBUG org.eclipse.jetty.util.log - Container org.eclipse.jetty.server.Server@6166e06f + qtp188523822{8<=0<=0/254,-1} as threadpool
+13:41:10.448 [main] DEBUG org.eclipse.jetty.util.log - Starting qtp188523822{8<=0<=0/254,-1}
+13:41:10.453 [main] DEBUG org.eclipse.jetty.util.log - STARTED qtp188523822{8<=7<=8/254,0}
+13:41:10.454 [main] DEBUG org.eclipse.jetty.util.log - Starting App@1165b38
+13:41:10.454 [main] DEBUG org.eclipse.jetty.util.log - starting App@1165b38
+13:41:10.454 [main] DEBUG org.eclipse.jetty.util.log - STARTED App@1165b38
+13:41:10.454 [main] DEBUG org.eclipse.jetty.util.log - starting org.eclipse.jetty.server.Server@6166e06f
+13:41:10.454 [main] DEBUG org.eclipse.jetty.util.log - Starting SelectChannelConnector@0.0.0.0:49386
+13:41:10.454 [main] DEBUG org.eclipse.jetty.util.log - Starting org.eclipse.jetty.server.nio.SelectChannelConnector$1@2925bf5b
+13:41:10.459 [main] DEBUG org.eclipse.jetty.util.log - STARTED org.eclipse.jetty.server.nio.SelectChannelConnector$1@2925bf5b
+13:41:10.468 [main] INFO org.eclipse.jetty.util.log - Started SelectChannelConnector@0.0.0.0:49386
+13:41:10.469 [main] DEBUG org.eclipse.jetty.util.log - STARTED SelectChannelConnector@0.0.0.0:49386
+13:41:10.474 [main] DEBUG org.eclipse.jetty.util.log - STARTED org.eclipse.jetty.server.Server@6166e06f
+13:41:10.538 [qtp188523822-14 - /] DEBUG org.eclipse.jetty.util.log - REQUEST / on org.eclipse.jetty.server.nio.SelectChannelConnector$2@1ee0dcec
+/
+13:41:10.554 [qtp188523822-14 - /] DEBUG org.eclipse.jetty.util.log - RESPONSE /  200
+13:41:10.561 [main] DEBUG org.eclipse.jetty.util.log - STOPPED org.eclipse.jetty.server.nio.SelectChannelConnector$1@2925bf5b
+13:41:10.562 [main] DEBUG org.eclipse.jetty.util.log - STOPPED SelectChannelConnector@0.0.0.0:49386
+13:41:10.562 [main] DEBUG org.eclipse.jetty.util.log - stopping org.eclipse.jetty.server.Server@6166e06f
+13:41:10.563 [main] DEBUG org.eclipse.jetty.util.log - stopping App@1165b38
+13:41:10.563 [main] DEBUG org.eclipse.jetty.util.log - STOPPED App@1165b38
+13:41:10.616 [main] DEBUG org.eclipse.jetty.util.log - STOPPED qtp188523822{8<=0<=0/254,2}
+13:41:10.617 [main] DEBUG org.eclipse.jetty.util.log - STOPPED org.eclipse.jetty.server.Server@6166e06f
+Commit status updated successfully.
+GHCommitStatus@4c5474f5[state=failure,description=SUCCESS,context=default,url=https://api.github.com/repos/eggestig/Continuous-Integration/statuses/5d227c71729fe1cca88cd4facc338797db2e092b,id=27493078169,nodeId=SC_kwDOLM94a88AAAAGZrcUmQ,createdAt=2024-02-13T12:41:11Z,updatedAt=2024-02-13T12:41:11Z]
+Deleting directory https://github.com/eggestig/Continuous-Integration.git...
+Directory deleted!
+Cloning https://github.com/eggestig/Continuous-Integration.git into /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/../tempRepo...
+13:41:12.883 [main] DEBUG org.eclipse.jgit.util.FS - readpipe [git, --version],/usr/bin
+13:41:12.887 [main] DEBUG org.eclipse.jgit.util.FS - readpipe may return 'git version 2.34.1'
+13:41:12.888 [main] DEBUG org.eclipse.jgit.util.FS - remaining output:
+
+13:41:12.889 [main] DEBUG org.eclipse.jgit.util.FS - readpipe [git, config, --system, --edit],/usr/bin
+13:41:12.892 [main] DEBUG org.eclipse.jgit.util.FS - readpipe may return '/etc/gitconfig'
+13:41:12.892 [main] DEBUG org.eclipse.jgit.util.FS - remaining output:
+
+13:41:13.204 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< # service=git-upload-pack
+13:41:13.205 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0000
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 51b94a2c9e01edb27e379b3615544e6193f18b00 HEAD multi_ack thin-pack side-band side-band-64k ofs-delta shallow deepen-since deepen-not deepen-relative no-progress include-tag multi_ack_detailed allow-tip-sha1-in-want allow-reachable-sha1-in-want no-done symref=HEAD:refs/heads/main filter object-format=sha1 agent=git/github-f2c0399b4791
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fa41f24edc160346d5c3e2da2296ff14e6743ff2 refs/heads/AntonTest
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 35186b04e85c9049f8f3b31dcf22df845d0fe202 refs/heads/AntonTest2
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 05632b274bc724ab836a63b29babf5df24f60c95 refs/heads/assessment
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 70e7572c49827cee23ff4915239c58b03ab179d8 refs/heads/henrik_test
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< cf06a20d87ab2ceaa88dbecffd759ff4e499757d refs/heads/issue/#11
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 5708e099f429091eaae59f562ef1c0965626220c refs/heads/issue/#18
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0881b663757d3184f4d913e08fd52016025c0202 refs/heads/issue/#22
+13:41:13.224 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 27da1e81785fbb4af4b9cf418b0b170368e402eb refs/heads/issue/#25
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 81b6313f5b490381f317036972ddeb761b58be28 refs/heads/issue/#28
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 20544b7f983feca2aa395eebc782c8e4d2c45cee refs/heads/issue/#29
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e5a29997b782499c79d157c5ea88208c535deeec refs/heads/issue/#33
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d3aaeee7f28746f16a0d6f040c816e7170b0cd73 refs/heads/issue/#35
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7 refs/heads/issue/#4
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 51b94a2c9e01edb27e379b3615544e6193f18b00 refs/heads/main
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 771a25d5d0255c7beb661567ad1d3c592439f3a1 refs/heads/robert-test
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 7ef4c31f86dc8275820727e9272575f6313d91a7 refs/heads/test
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 47d7cd78b132471413727968242b1120855fd683 refs/heads/testBranch-17
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< add6ac448e6a598ce9ef9709dc5f8df114cbbfcf refs/heads/testBranch-17-1
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fbfd77db2f0dc05ab7c904d163ad3429b22d550a refs/heads/testBranch-17-2
+13:41:13.225 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 18dc913d092b92a8e0eeed025c3cbd3921bce60e refs/heads/testBranch/#1
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 9fb75cd1ab30c44bac7f78946c21618dd5caf600 refs/heads/testCommits
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e809733042b46fafb0517b855f9be57a67518510 refs/pull/10/head
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< cf06a20d87ab2ceaa88dbecffd759ff4e499757d refs/pull/15/head
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d97a9143e12e08904c76b539ad0ea5d692c7d915 refs/pull/16/head
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 023444ac83d8901b60588a0b21411e50d6bc3d96 refs/pull/2/head
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 77bcd6f0ee1515552251baa56919c409f9663b44 refs/pull/20/head
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 8260d7e90f82720a4e87a07956b5eb8111d6db22 refs/pull/21/head
+13:41:13.226 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0881b663757d3184f4d913e08fd52016025c0202 refs/pull/23/head
+13:41:13.227 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 27da1e81785fbb4af4b9cf418b0b170368e402eb refs/pull/26/head
+13:41:13.227 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fcc6df882fa6ea742948f4edb38f00eb25685526 refs/pull/27/head
+13:41:13.227 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 81b6313f5b490381f317036972ddeb761b58be28 refs/pull/30/head
+13:41:13.227 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< c171e2be5862cc121c78013637144a18f43d5e7d refs/pull/31/head
+13:41:13.227 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 20544b7f983feca2aa395eebc782c8e4d2c45cee refs/pull/32/head
+13:41:13.227 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e5a29997b782499c79d157c5ea88208c535deeec refs/pull/34/head
+13:41:13.227 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< ad7722e8d28b2ad4c50163e0870ff2a5de68904c refs/pull/34/merge
+13:41:13.228 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d3aaeee7f28746f16a0d6f040c816e7170b0cd73 refs/pull/37/head
+13:41:13.228 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 627692f89389c0dc2783c13ce06c89f1e205717b refs/pull/37/merge
+13:41:13.228 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7 refs/pull/5/head
+13:41:13.228 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f03f2e78c9d9e2babeeaf791290e3d9f4d63cf5c refs/pull/8/head
+13:41:13.228 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0000
+13:41:13.284 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want cf06a20d87ab2ceaa88dbecffd759ff4e499757d no-progress include-tag ofs-delta multi_ack_detailed no-done thin-pack side-band-64k agent=JGit/4.8.0.201706111038-r
+
+13:41:13.284 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 18dc913d092b92a8e0eeed025c3cbd3921bce60e
+
+13:41:13.285 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 47d7cd78b132471413727968242b1120855fd683
+
+13:41:13.285 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want add6ac448e6a598ce9ef9709dc5f8df114cbbfcf
+
+13:41:13.285 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 81b6313f5b490381f317036972ddeb761b58be28
+
+13:41:13.286 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 7ef4c31f86dc8275820727e9272575f6313d91a7
+
+13:41:13.286 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 05632b274bc724ab836a63b29babf5df24f60c95
+
+13:41:13.286 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 70e7572c49827cee23ff4915239c58b03ab179d8
+
+13:41:13.287 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want fa41f24edc160346d5c3e2da2296ff14e6743ff2
+
+13:41:13.287 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7
+
+13:41:13.288 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 51b94a2c9e01edb27e379b3615544e6193f18b00
+
+13:41:13.288 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 35186b04e85c9049f8f3b31dcf22df845d0fe202
+
+13:41:13.289 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 27da1e81785fbb4af4b9cf418b0b170368e402eb
+
+13:41:13.289 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want d3aaeee7f28746f16a0d6f040c816e7170b0cd73
+
+13:41:13.289 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 5708e099f429091eaae59f562ef1c0965626220c
+
+13:41:13.290 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want fbfd77db2f0dc05ab7c904d163ad3429b22d550a
+
+13:41:13.290 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 0881b663757d3184f4d913e08fd52016025c0202
+
+13:41:13.290 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 9fb75cd1ab30c44bac7f78946c21618dd5caf600
+
+13:41:13.291 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 20544b7f983feca2aa395eebc782c8e4d2c45cee
+
+13:41:13.291 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want e5a29997b782499c79d157c5ea88208c535deeec
+
+13:41:13.292 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 771a25d5d0255c7beb661567ad1d3c592439f3a1
+
+13:41:13.292 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> 0000
+13:41:13.294 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> done
+
+13:41:13.476 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< NAK
+Cloning completed!
+Creating skeleton .env file
+File created: .env
+Successfully wrote to the file.
+Deleting directory https://github.com/eggestig/Continuous-Integration.git...
+Directory deleted!
+Cloning https://github.com/eggestig/Continuous-Integration.git into /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/../tempRepo...
+13:41:14.255 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< # service=git-upload-pack
+13:41:14.255 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0000
+13:41:14.256 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 51b94a2c9e01edb27e379b3615544e6193f18b00 HEAD multi_ack thin-pack side-band side-band-64k ofs-delta shallow deepen-since deepen-not deepen-relative no-progress include-tag multi_ack_detailed allow-tip-sha1-in-want allow-reachable-sha1-in-want no-done symref=HEAD:refs/heads/main filter object-format=sha1 agent=git/github-f2c0399b4791
+13:41:14.257 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fa41f24edc160346d5c3e2da2296ff14e6743ff2 refs/heads/AntonTest
+13:41:14.257 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 35186b04e85c9049f8f3b31dcf22df845d0fe202 refs/heads/AntonTest2
+13:41:14.257 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 05632b274bc724ab836a63b29babf5df24f60c95 refs/heads/assessment
+13:41:14.257 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 70e7572c49827cee23ff4915239c58b03ab179d8 refs/heads/henrik_test
+13:41:14.258 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< cf06a20d87ab2ceaa88dbecffd759ff4e499757d refs/heads/issue/#11
+13:41:14.258 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 5708e099f429091eaae59f562ef1c0965626220c refs/heads/issue/#18
+13:41:14.258 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0881b663757d3184f4d913e08fd52016025c0202 refs/heads/issue/#22
+13:41:14.258 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 27da1e81785fbb4af4b9cf418b0b170368e402eb refs/heads/issue/#25
+13:41:14.258 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 81b6313f5b490381f317036972ddeb761b58be28 refs/heads/issue/#28
+13:41:14.258 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 20544b7f983feca2aa395eebc782c8e4d2c45cee refs/heads/issue/#29
+13:41:14.259 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e5a29997b782499c79d157c5ea88208c535deeec refs/heads/issue/#33
+13:41:14.259 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d3aaeee7f28746f16a0d6f040c816e7170b0cd73 refs/heads/issue/#35
+13:41:14.259 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7 refs/heads/issue/#4
+13:41:14.259 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 51b94a2c9e01edb27e379b3615544e6193f18b00 refs/heads/main
+13:41:14.259 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 771a25d5d0255c7beb661567ad1d3c592439f3a1 refs/heads/robert-test
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 7ef4c31f86dc8275820727e9272575f6313d91a7 refs/heads/test
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 47d7cd78b132471413727968242b1120855fd683 refs/heads/testBranch-17
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< add6ac448e6a598ce9ef9709dc5f8df114cbbfcf refs/heads/testBranch-17-1
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fbfd77db2f0dc05ab7c904d163ad3429b22d550a refs/heads/testBranch-17-2
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 18dc913d092b92a8e0eeed025c3cbd3921bce60e refs/heads/testBranch/#1
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 9fb75cd1ab30c44bac7f78946c21618dd5caf600 refs/heads/testCommits
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e809733042b46fafb0517b855f9be57a67518510 refs/pull/10/head
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< cf06a20d87ab2ceaa88dbecffd759ff4e499757d refs/pull/15/head
+13:41:14.260 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d97a9143e12e08904c76b539ad0ea5d692c7d915 refs/pull/16/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 023444ac83d8901b60588a0b21411e50d6bc3d96 refs/pull/2/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 77bcd6f0ee1515552251baa56919c409f9663b44 refs/pull/20/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 8260d7e90f82720a4e87a07956b5eb8111d6db22 refs/pull/21/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0881b663757d3184f4d913e08fd52016025c0202 refs/pull/23/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 27da1e81785fbb4af4b9cf418b0b170368e402eb refs/pull/26/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fcc6df882fa6ea742948f4edb38f00eb25685526 refs/pull/27/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 81b6313f5b490381f317036972ddeb761b58be28 refs/pull/30/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< c171e2be5862cc121c78013637144a18f43d5e7d refs/pull/31/head
+13:41:14.261 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 20544b7f983feca2aa395eebc782c8e4d2c45cee refs/pull/32/head
+13:41:14.262 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e5a29997b782499c79d157c5ea88208c535deeec refs/pull/34/head
+13:41:14.262 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< ad7722e8d28b2ad4c50163e0870ff2a5de68904c refs/pull/34/merge
+13:41:14.262 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d3aaeee7f28746f16a0d6f040c816e7170b0cd73 refs/pull/37/head
+13:41:14.262 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 627692f89389c0dc2783c13ce06c89f1e205717b refs/pull/37/merge
+13:41:14.262 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7 refs/pull/5/head
+13:41:14.262 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f03f2e78c9d9e2babeeaf791290e3d9f4d63cf5c refs/pull/8/head
+13:41:14.262 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0000
+13:41:14.267 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want cf06a20d87ab2ceaa88dbecffd759ff4e499757d no-progress include-tag ofs-delta multi_ack_detailed no-done thin-pack side-band-64k agent=JGit/4.8.0.201706111038-r
+
+13:41:14.268 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 18dc913d092b92a8e0eeed025c3cbd3921bce60e
+
+13:41:14.268 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 47d7cd78b132471413727968242b1120855fd683
+
+13:41:14.268 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want add6ac448e6a598ce9ef9709dc5f8df114cbbfcf
+
+13:41:14.269 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 81b6313f5b490381f317036972ddeb761b58be28
+
+13:41:14.269 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 7ef4c31f86dc8275820727e9272575f6313d91a7
+
+13:41:14.269 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 05632b274bc724ab836a63b29babf5df24f60c95
+
+13:41:14.269 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 70e7572c49827cee23ff4915239c58b03ab179d8
+
+13:41:14.269 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want fa41f24edc160346d5c3e2da2296ff14e6743ff2
+
+13:41:14.270 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7
+
+13:41:14.270 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 51b94a2c9e01edb27e379b3615544e6193f18b00
+
+13:41:14.270 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 35186b04e85c9049f8f3b31dcf22df845d0fe202
+
+13:41:14.270 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 27da1e81785fbb4af4b9cf418b0b170368e402eb
+
+13:41:14.270 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want d3aaeee7f28746f16a0d6f040c816e7170b0cd73
+
+13:41:14.270 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 5708e099f429091eaae59f562ef1c0965626220c
+
+13:41:14.271 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want fbfd77db2f0dc05ab7c904d163ad3429b22d550a
+
+13:41:14.271 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 0881b663757d3184f4d913e08fd52016025c0202
+
+13:41:14.271 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 9fb75cd1ab30c44bac7f78946c21618dd5caf600
+
+13:41:14.271 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 20544b7f983feca2aa395eebc782c8e4d2c45cee
+
+13:41:14.272 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want e5a29997b782499c79d157c5ea88208c535deeec
+
+13:41:14.272 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 771a25d5d0255c7beb661567ad1d3c592439f3a1
+
+13:41:14.272 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> 0000
+13:41:14.272 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> done
+
+13:41:14.467 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< NAK
+Cloning completed!
+Creating skeleton .env file
+File created: .env
+Successfully wrote to the file.
+Deleting directory https://github.com/eggestig/Continuous-Integration.git...
+Directory deleted!
+Cloning https://github.com/eggestig/Continuous-Integration.git into /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/../tempRepo...
+13:41:14.932 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< # service=git-upload-pack
+13:41:14.932 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0000
+13:41:14.933 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 51b94a2c9e01edb27e379b3615544e6193f18b00 HEAD multi_ack thin-pack side-band side-band-64k ofs-delta shallow deepen-since deepen-not deepen-relative no-progress include-tag multi_ack_detailed allow-tip-sha1-in-want allow-reachable-sha1-in-want no-done symref=HEAD:refs/heads/main filter object-format=sha1 agent=git/github-f2c0399b4791
+13:41:14.933 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fa41f24edc160346d5c3e2da2296ff14e6743ff2 refs/heads/AntonTest
+13:41:14.933 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 35186b04e85c9049f8f3b31dcf22df845d0fe202 refs/heads/AntonTest2
+13:41:14.934 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 05632b274bc724ab836a63b29babf5df24f60c95 refs/heads/assessment
+13:41:14.934 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 70e7572c49827cee23ff4915239c58b03ab179d8 refs/heads/henrik_test
+13:41:14.934 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< cf06a20d87ab2ceaa88dbecffd759ff4e499757d refs/heads/issue/#11
+13:41:14.934 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 5708e099f429091eaae59f562ef1c0965626220c refs/heads/issue/#18
+13:41:14.934 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0881b663757d3184f4d913e08fd52016025c0202 refs/heads/issue/#22
+13:41:14.934 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 27da1e81785fbb4af4b9cf418b0b170368e402eb refs/heads/issue/#25
+13:41:14.935 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 81b6313f5b490381f317036972ddeb761b58be28 refs/heads/issue/#28
+13:41:14.935 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 20544b7f983feca2aa395eebc782c8e4d2c45cee refs/heads/issue/#29
+13:41:14.935 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e5a29997b782499c79d157c5ea88208c535deeec refs/heads/issue/#33
+13:41:14.935 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d3aaeee7f28746f16a0d6f040c816e7170b0cd73 refs/heads/issue/#35
+13:41:14.935 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7 refs/heads/issue/#4
+13:41:14.935 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 51b94a2c9e01edb27e379b3615544e6193f18b00 refs/heads/main
+13:41:14.935 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 771a25d5d0255c7beb661567ad1d3c592439f3a1 refs/heads/robert-test
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 7ef4c31f86dc8275820727e9272575f6313d91a7 refs/heads/test
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 47d7cd78b132471413727968242b1120855fd683 refs/heads/testBranch-17
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< add6ac448e6a598ce9ef9709dc5f8df114cbbfcf refs/heads/testBranch-17-1
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fbfd77db2f0dc05ab7c904d163ad3429b22d550a refs/heads/testBranch-17-2
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 18dc913d092b92a8e0eeed025c3cbd3921bce60e refs/heads/testBranch/#1
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 9fb75cd1ab30c44bac7f78946c21618dd5caf600 refs/heads/testCommits
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e809733042b46fafb0517b855f9be57a67518510 refs/pull/10/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< cf06a20d87ab2ceaa88dbecffd759ff4e499757d refs/pull/15/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d97a9143e12e08904c76b539ad0ea5d692c7d915 refs/pull/16/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 023444ac83d8901b60588a0b21411e50d6bc3d96 refs/pull/2/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 77bcd6f0ee1515552251baa56919c409f9663b44 refs/pull/20/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 8260d7e90f82720a4e87a07956b5eb8111d6db22 refs/pull/21/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0881b663757d3184f4d913e08fd52016025c0202 refs/pull/23/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 27da1e81785fbb4af4b9cf418b0b170368e402eb refs/pull/26/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< fcc6df882fa6ea742948f4edb38f00eb25685526 refs/pull/27/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 81b6313f5b490381f317036972ddeb761b58be28 refs/pull/30/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< c171e2be5862cc121c78013637144a18f43d5e7d refs/pull/31/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 20544b7f983feca2aa395eebc782c8e4d2c45cee refs/pull/32/head
+13:41:14.936 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< e5a29997b782499c79d157c5ea88208c535deeec refs/pull/34/head
+13:41:14.937 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< ad7722e8d28b2ad4c50163e0870ff2a5de68904c refs/pull/34/merge
+13:41:14.937 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< d3aaeee7f28746f16a0d6f040c816e7170b0cd73 refs/pull/37/head
+13:41:14.937 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 627692f89389c0dc2783c13ce06c89f1e205717b refs/pull/37/merge
+13:41:14.937 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7 refs/pull/5/head
+13:41:14.937 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< f03f2e78c9d9e2babeeaf791290e3d9f4d63cf5c refs/pull/8/head
+13:41:14.937 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< 0000
+13:41:14.941 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want cf06a20d87ab2ceaa88dbecffd759ff4e499757d no-progress include-tag ofs-delta multi_ack_detailed no-done thin-pack side-band-64k agent=JGit/4.8.0.201706111038-r
+
+13:41:14.942 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 18dc913d092b92a8e0eeed025c3cbd3921bce60e
+
+13:41:14.942 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 47d7cd78b132471413727968242b1120855fd683
+
+13:41:14.942 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want add6ac448e6a598ce9ef9709dc5f8df114cbbfcf
+
+13:41:14.942 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 81b6313f5b490381f317036972ddeb761b58be28
+
+13:41:14.942 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 7ef4c31f86dc8275820727e9272575f6313d91a7
+
+13:41:14.943 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 05632b274bc724ab836a63b29babf5df24f60c95
+
+13:41:14.943 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 70e7572c49827cee23ff4915239c58b03ab179d8
+
+13:41:14.943 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want fa41f24edc160346d5c3e2da2296ff14e6743ff2
+
+13:41:14.943 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want f487b6352e0e9e5c59a2e982f9cf32e8ecea13d7
+
+13:41:14.944 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 51b94a2c9e01edb27e379b3615544e6193f18b00
+
+13:41:14.944 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 35186b04e85c9049f8f3b31dcf22df845d0fe202
+
+13:41:14.944 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 27da1e81785fbb4af4b9cf418b0b170368e402eb
+
+13:41:14.944 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want d3aaeee7f28746f16a0d6f040c816e7170b0cd73
+
+13:41:14.944 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 5708e099f429091eaae59f562ef1c0965626220c
+
+13:41:14.945 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want fbfd77db2f0dc05ab7c904d163ad3429b22d550a
+
+13:41:14.945 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 0881b663757d3184f4d913e08fd52016025c0202
+
+13:41:14.945 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 9fb75cd1ab30c44bac7f78946c21618dd5caf600
+
+13:41:14.945 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 20544b7f983feca2aa395eebc782c8e4d2c45cee
+
+13:41:14.945 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want e5a29997b782499c79d157c5ea88208c535deeec
+
+13:41:14.946 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> want 771a25d5d0255c7beb661567ad1d3c592439f3a1
+
+13:41:14.946 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> 0000
+13:41:14.946 [main] DEBUG org.eclipse.jgit.transport.PacketLineOut - git> done
+
+13:41:15.107 [main] DEBUG org.eclipse.jgit.transport.PacketLineIn - git< NAK
+Cloning completed!
+Creating skeleton .env file
+File created: .env
+Successfully wrote to the file.
+Captured Output:
+[[1;34mINFO[m] Scanning for projects...
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m----------------------< [0;36mcom.mycompany.app:my-app[0;1m >----------------------[m
+[[1;34mINFO[m] [1mBuilding my-app 1.0-SNAPSHOT[m
+[[1;34mINFO[m] [1m--------------------------------[ jar ]---------------------------------[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.0.2:resources[m [1m(default-resources)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildSuccess/my-app/src/main/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.0:compile[m [1m(default-compile)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildSuccess/my-app/target/classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-resources-plugin:3.0.2:testResources[m [1m(default-testResources)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Using 'UTF-8' encoding to copy filtered resources.
+[[1;34mINFO[m] skip non existing resourceDirectory /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildSuccess/my-app/src/test/resources
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-compiler-plugin:3.8.0:testCompile[m [1m(default-testCompile)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Changes detected - recompiling the module!
+[[1;34mINFO[m] Compiling 1 source file to /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildSuccess/my-app/target/test-classes
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-surefire-plugin:2.22.1:test[m [1m(default-test)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m]  T E S T S
+[[1;34mINFO[m] -------------------------------------------------------
+[[1;34mINFO[m] Running com.mycompany.app.[1mAppTest[m
+[[1;34mINFO[m] [1;32mTests run: [0;1;32m1[m, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in com.mycompany.app.[1mAppTest[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] Results:
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1;32mTests run: 1, Failures: 0, Errors: 0, Skipped: 0[m
+[[1;34mINFO[m] 
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:3.0.2:jar[m [1m(default-jar)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/testBuildSuccess/my-app/target/my-app-1.0-SNAPSHOT.jar
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  1.889 s
+[[1;34mINFO[m] Finished at: 2024-02-13T13:41:18+01:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+
+Exit Code: 0
+BUILD SUCCESS
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.033 sec
+
+Results :
+
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+
+[[1;34mINFO[m] 
+[[1;34mINFO[m] [1m--- [0;32mmaven-jar-plugin:2.4:jar[m [1m(default-jar)[m @ [36mmy-app[0;1m ---[m
+[[1;34mINFO[m] Building jar: /home/kelvin/DD2480/CI_server/Continuous-Integration/tempRepo/my-app/target/my-app-1.0-SNAPSHOT.jar
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] [1;32mBUILD SUCCESS[m
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+[[1;34mINFO[m] Total time:  14.653 s
+[[1;34mINFO[m] Finished at: 2024-02-13T13:41:18+01:00
+[[1;34mINFO[m] [1m------------------------------------------------------------------------[m
+
+</pre>
+</body>
+</html>

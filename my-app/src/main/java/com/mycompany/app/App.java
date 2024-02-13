@@ -40,6 +40,7 @@ public class App extends AbstractHandler
     private static final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
     private static final String BUILD_SUCCESS = "BUILD SUCCESS";
     private static final String BUILD_FAILURE = "BUILD FAILURE";
+    private static String buildLog = "";
 
     public void handle(String target,
             Request baseRequest,
@@ -65,6 +66,9 @@ public class App extends AbstractHandler
             String repositoryName = jsonNode.path("repository").path("name").asText();
             String pushedBranch = jsonNode.path("ref").asText();
             String repoURI = jsonNode.path("repository").path("clone_url").asText();
+            String timestamp = jsonNode.path("head_commit").path("timestamp").asText();
+            String commitID = jsonNode.path("after").asText();
+
 
             System.out.println("Received GitHub push event for repository: " + repositoryName +
                     ", pushed to branch: " + pushedBranch);
@@ -83,7 +87,8 @@ public class App extends AbstractHandler
                 setCommitStatus(jsonNode, status);
 
                 //Write the JSON content to a file
-                ReserveHistory.writeJsonToFile(jsonNode);
+                ReserveHistory.writeJsonToHtml(commitID,timestamp,status,buildLog);
+
                 
             } catch (GitAPIException | IOException e) {
                 System.out.println("Exception occurred while cloning repo");
@@ -98,10 +103,10 @@ public class App extends AbstractHandler
         // Check the requested path
             ReserveHistory.showAllCommit();
         }else if (target.startsWith("/commit")) {
-            // Extract commit number from the path
-            int commitNumber = Integer.parseInt(target.substring("/commit".length()));
-            ReserveHistory.serveCommitContent(commitNumber);
-        } else ReserveHistory.generateErrorPage();
+            // Extract file name from the path
+            String fileName = target.substring("/commit".length());
+            ReserveHistory.serveCommitContent(fileName);
+        }else ReserveHistory.generateErrorPage();
     }
 
     public static void cloneRepo(String URI, String branch) throws GitAPIException, IOException {
@@ -157,6 +162,7 @@ public class App extends AbstractHandler
             Process commandRunner = processBuilder.start();
 
             String output = captureOutput(commandRunner.getInputStream());
+            buildLog = output;
             int exitCode = commandRunner.waitFor();
 
             System.out.println("Captured Output:\n" + output);
@@ -175,6 +181,7 @@ public class App extends AbstractHandler
         }
 
         System.out.println(buildResult);
+        
         return buildResult;
     }
 

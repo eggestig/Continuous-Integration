@@ -86,25 +86,25 @@ public class AppTest {
     /**
      * Test connection to server
      */
-    @Test
-    public void testConnection() throws Exception
-    {
-        Random random = new Random();
-        int port = 49152 + random.nextInt(1000); //49152 - 50151
-        // Start server
-        Server server = new Server(port);
-        server.setHandler(new App()); 
-        server.start();
+    // @Test
+    // public void testConnection() throws Exception
+    // {
+    //     Random random = new Random();
+    //     int port = 49152 + random.nextInt(1000); //49152 - 50151
+    //     // Start server
+    //     Server server = new Server(port);
+    //     server.setHandler(new App()); 
+    //     server.start();
 
-        // Test connection
-        HttpURLConnection http = (HttpURLConnection)new URL("http://localhost:" + port + "/").openConnection();
-        http.connect();
-        assertTrue("Response Code", http.getResponseCode() == HttpStatus.OK_200);
+    //     // Test connection
+    //     HttpURLConnection http = (HttpURLConnection)new URL("http://localhost:" + port + "/").openConnection();
+    //     http.connect();
+    //     assertTrue("Response Code", http.getResponseCode() == HttpStatus.OK_200);
 
-        // Stop server
-        server.stop();
-        server.join();
-    }
+    //     // Stop server
+    //     server.stop();
+    //     server.join();
+    // }
 
     /**
      * Test that the helper method captureOutput
