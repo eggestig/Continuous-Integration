@@ -33,59 +33,19 @@ import io.github.cdimascio.dotenv.Dotenv;
  See the Jetty documentation for API documentation of those classes.
 */
 public class App extends AbstractHandler
-{
+{   
+    private JsonNode jsonNode;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
-
-    private JsonNode jsonNode;
-
-    public static void cloneRepo(String URI, String branch) throws GitAPIException, IOException {
-        System.out.println("Deleting directory " + URI + "...");
-        FileUtils.deleteDirectory(new File(CloneDirectoryPath));
-        System.out.println("Directory deleted!");
-        System.out.println("Cloning " + URI + " into " + CloneDirectoryPath + "...");
-        Git.cloneRepository()
-                .setURI(URI)
-                .setBranch(branch)
-                .setDirectory(Paths.get(CloneDirectoryPath).toFile())
-                .call();
-        System.out.println("Cloning completed!");
-        
-        System.out.println("Creating skeleton .env file");
-        // Create file
-        try {
-            File myObj = new File(CloneDirectoryPath + "/my-app/.env");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        // Write to created file
-        String filePath = System.getProperty("user.dir");
-        Dotenv dotenv = Dotenv.configure()
-            .directory(filePath)
-            .load();
-
-        try {
-            FileWriter myWriter = new FileWriter(CloneDirectoryPath + "/my-app/.env");
-            myWriter.write("AUTH_TOKEN_ENV=\"" + dotenv.get("AUTH_TOKEN_ENV") + "\"\nPORT=0");
-            myWriter.close();
-            System.out.println("Successfully wrote to the file.");
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
+    private static final String BUILD_SUCCESS = "BUILD SUCCESS";
+    private static final String BUILD_FAILURE = "BUILD FAILURE";
 
     public void handle(String target,
             Request baseRequest,
             HttpServletRequest request,
             HttpServletResponse response)
             throws IOException, ServletException {
+
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
@@ -103,95 +63,72 @@ public class App extends AbstractHandler
             // Here we can extract the needed information from the payload
             String repositoryName = jsonNode.path("repository").path("name").asText();
             String pushedBranch = jsonNode.path("ref").asText();
+            String repoURI = jsonNode.path("repository").path("clone_url").asText();
+
             System.out.println("Received GitHub push event for repository: " + repositoryName +
                     ", pushed to branch: " + pushedBranch);
 
-            // System.out.println("Received GitHub push event: " + payload);
-        }
+            System.out.println(repoURI + "/" + pushedBranch);
 
-        // Respond with a 200 OK status
-        // here you do all the continuous integration tasks
-        // for example
-        // 1st clone your repository
-        try {
-            if ("push".equals(eventType)) {
-                String repoURI = jsonNode.path("repository").path("clone_url").asText();
-                String branch = jsonNode.path("ref").asText();
-                System.out.println(repoURI + "/" + branch);
-                System.out.flush();
-                cloneRepo(repoURI, branch);
+            try {
 
-                // 2nd compile the code with mvn
-                response.setStatus(HttpServletResponse.SC_OK);
-        
-                // Build project
-                String status = projectBuilder(CloneDirectoryPath); // Returns 'SUCCESS' or 'FAILURE'
-                
+                //Clone repo to local directory
+                cloneRepo(repoURI, pushedBranch);
+
+                // Run mvn package on the project
+                String status = projectBuilder(CloneDirectoryPath); // Returns 'BUILD SUCCESS' or 'BUILD FAILURE'
+            
                 // Set commit status
-                if(status.compareTo("SUCCESS") == 0) {
-                    setCommitStatus(jsonNode, "SUCCESS");
-                } else {
-                    setCommitStatus(jsonNode, "FAILURE");
-                }
+                setCommitStatus(jsonNode, status);
                 
+            } catch (GitAPIException | IOException e) {
+                System.out.println("Exception occurred while cloning repo");
+                e.printStackTrace();
             }
-        } catch(GitAPIException e) {
-            System.out.println("Exception occurred while cloning repo");
+        }
+        response.getWriter().println("CI job done");
+    }
+
+    public static void cloneRepo(String URI, String branch) throws GitAPIException, IOException {
+        System.out.println("Deleting directory " + URI + "...");
+        FileUtils.deleteDirectory(new File(CloneDirectoryPath));
+        System.out.println("Directory deleted!");
+        System.out.println("Cloning " + URI + " into " + CloneDirectoryPath + "...");
+
+        Git.cloneRepository()
+                .setURI(URI)
+                .setBranch(branch)
+                .setDirectory(Paths.get(CloneDirectoryPath).toFile())
+                .call();
+        System.out.println("Cloning completed!");
+        System.out.println("Creating skeleton .env file");
+
+        // Create file
+        try {
+            File myObj = new File(CloneDirectoryPath + "/my-app/.env");
+            if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred when cloning the repo");
             e.printStackTrace();
         }
-
-        response.getWriter().println("CI job done");
-
-    }
-    
-    private static GitHub getGithub(final String token) {
-        try {
-            return GitHub.connectUsingOAuth("https://api.github.com", token);
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static boolean setCommitStatus(JsonNode payload, String state) {
-        try {
-            String filePath = System.getProperty("user.dir"); // Sometimes need to add 'my-app' to the path
-            // String filePath = System.getProperty("user.dir") + File.separator + "my-app";
-            Dotenv dotenv = Dotenv.configure()
+        // Write to created file
+        String filePath = System.getProperty("user.dir");
+        Dotenv dotenv = Dotenv.configure()
             .directory(filePath)
             .load();
-            System.out.println("Token: " + dotenv.get("AUTH_TOKEN_ENV"));
-            GitHub github = getGithub(dotenv.get("AUTH_TOKEN_ENV"));
-            System.out.println(github);
 
-            String owner = payload.path("repository")
-                    .path("owner")
-                    .path("name")
-                    .asText();
-            String repoName = payload.path("repository")
-                    .path("name")
-                    .asText();
-
-            String sha = payload.path("after").asText();
-
-            String description = "BUILD " + state;
-
-            String targetUrl = payload.path("head_commit").path("url").asText();
-
-            GHRepository repository = github.getRepository(owner + "/" + repoName);
-            repository.createCommitStatus(sha,
-                    state.equals("SUCCESS") ? GHCommitState.SUCCESS : GHCommitState.FAILURE,
-                    targetUrl,
-                    description);
-
-            System.out.println("Commit status updated successfully.");
-            System.out.println(repository.getLastCommitStatus(sha));
-            System.out.flush();
-            return true;
-        } catch (Exception e) {
-            System.out.println("Commit status update failed.");
+        try {
+            FileWriter myWriter = new FileWriter(CloneDirectoryPath + "/my-app/.env");
+            myWriter.write("AUTH_TOKEN_ENV=\"" + dotenv.get("AUTH_TOKEN_ENV") + "\"\nPORT=0");
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred when cloning the repo.");
             e.printStackTrace();
-            System.out.flush();
-            return false;
         }
     }
 
@@ -210,21 +147,20 @@ public class App extends AbstractHandler
             System.out.println("Captured Output:\n" + output);
             System.out.println("Exit Code: " + exitCode);
 
-            if (output.contains("BUILD SUCCESS")) {
-                buildResult = "SUCCESS";
+            if (output.contains("BUILD_SUCCESS")) {
+                buildResult = BUILD_SUCCESS;
 
-            } else if (output.contains("BUILD FAILURE")) {
-                buildResult = "FAILURE";
+            } else if (output.contains("BUILD_FAILURE")) {
+                buildResult = BUILD_FAILURE;
             }
 
         } catch (IOException | InterruptedException e) {
-            // TODO Auto-generated catch block
+            System.out.println("Something went wrong when building the project");
             e.printStackTrace();
         }
 
         System.out.println(buildResult);
         return buildResult;
-
     }
 
     public static String captureOutput(InputStream inputStream) throws IOException {
@@ -235,19 +171,67 @@ public class App extends AbstractHandler
             while ((line = reader.readLine()) != null) {
                 output.append(line).append(System.lineSeparator());
             }
-
             return output.toString();
+        }
+    }
+
+    public static boolean setCommitStatus(JsonNode payload, String state) {
+        try {
+            String filePath = System.getProperty("user.dir"); // Sometimes need to add 'my-app' to the path
+            // String filePath = System.getProperty("user.dir") + File.separator + "my-app";
+            Dotenv dotenv = Dotenv.configure()
+            .directory(filePath)
+            .load();
+
+            GitHub github = getGithub(dotenv.get("AUTH_TOKEN_ENV"));
+
+            String owner = payload.path("repository")
+                    .path("owner")
+                    .path("name")
+                    .asText();
+            String repoName = payload.path("repository")
+                    .path("name")
+                    .asText();
+
+            String sha = payload.path("after").asText();
+
+            String description = state;
+
+            String targetUrl = payload.path("head_commit").path("url").asText();
+
+            GHRepository repository = github.getRepository(owner + "/" + repoName);
+            repository.createCommitStatus(sha,
+                    state.equals(BUILD_SUCCESS) ? GHCommitState.SUCCESS : GHCommitState.FAILURE,
+                    targetUrl,
+                    description);
+
+            System.out.println("Commit status updated successfully.");
+            System.out.println(repository.getLastCommitStatus(sha));
+            System.out.flush();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Commit status update failed.");
+            e.printStackTrace();
+            System.out.flush();
+            return false;
+        }
+    }
+
+    private static GitHub getGithub(final String token) {
+        try {
+            return GitHub.connectUsingOAuth("https://api.github.com", token);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello World!");
+        System.out.println("Waiting for a push event to trigger the Github webHook...");
         int port = 0;
         Dotenv dotenv = Dotenv.load();
         System.out.println(dotenv.get("PORT"));
         port = dotenv.get("PORT").compareTo("8080") == 0 ? 8080 : 0;
-
 
         System.out.println("Try to run on port: " + port + " from directory: " + System.getProperty("user.dir"));
         
