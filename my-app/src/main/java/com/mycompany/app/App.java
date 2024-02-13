@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.stream.Collectors;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jetty.server.Request;
@@ -41,7 +42,7 @@ import com.jcraft.jsch.Session;
 public class App extends AbstractHandler
 {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private static final String CloneDirectoryPath = "../" + System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
+    private static final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
 
     private JsonNode jsonNode;
 
@@ -107,7 +108,19 @@ public class App extends AbstractHandler
 
         projectBuilder(System.getProperty("user.dir"));
 
-        response.getWriter().println("CI job done");
+        PrintWriter out = response.getWriter();
+
+        ReserveHistory.generateHtmlContent(out);
+        if ("/".equals(target)) {
+        // Check the requested path
+            ReserveHistory.showAllCommit();
+        }else if (target.startsWith("/commit")) {
+            // Extract commit number from the path
+            int commitNumber = Integer.parseInt(target.substring("/commit".length()));
+            ReserveHistory.serveCommitContent(commitNumber);
+        } else ReserveHistory.generateErrorPage();
+
+
     }
 
     public static String projectBuilder(String path){

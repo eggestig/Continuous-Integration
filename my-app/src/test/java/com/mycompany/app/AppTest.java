@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -32,8 +33,9 @@ import org.junit.Test;
 public class AppTest 
 {
     private final String URI = "https://github.com/eggestig/Continuous-Integration.git";
-    private final String CloneDirectoryPath = "../" + System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
+    private final String CloneDirectoryPath = "../tempRepo"; // '/my-app/../tempRepo'
     private final String Branch = "assessment";
+
     /**
      * Rigorous Test :-)
      */
@@ -87,13 +89,16 @@ public class AppTest
      */
     @Test
     public void testClonedRepo() throws GitAPIException, IOException {
+
         App.cloneRepo(URI, Branch);
 
-        FileRepositoryBuilder repo = new FileRepositoryBuilder()
-            .findGitDir(new File(CloneDirectoryPath + "/.git"));
-
-        assertTrue("Cloned Git Repo exists", repo.getGitDir() != null);
-    }
+        File repoDir = Paths.get(CloneDirectoryPath).toFile();
+        try (Git git = Git.open(repoDir)) {
+            Repository repository = git.getRepository();
+            assertTrue("Cloned Git Repo exists", repository.getObjectDatabase().exists());
+        }
+        
+}
 
     /**
      * Test correctly cloned repo branch
