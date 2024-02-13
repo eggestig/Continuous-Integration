@@ -102,7 +102,7 @@ public class App extends AbstractHandler
                 GHCommitState assembleStatus = projectAssembler(CloneDirectoryPath);
 
                 // Set commit status
-                setCommitStatus(jsonNode, assembleStatus, "ASSEMBLE: " + testStatus);
+                setCommitStatus(jsonNode, assembleStatus, "ASSEMBLE: " + testStatus, CONTEXT_ASSEMBLY);
 
                 //Write the JSON content to a file
                 ReserveHistory.writeJsonToHtml(commitID,timestamp,buildLog);
