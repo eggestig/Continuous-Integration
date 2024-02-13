@@ -8,18 +8,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class ReserveHistory {
-    private static String path = "../my-app/src/main/java/com/mycompany/app/";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static String path = "../my-app/src/main/java/com/mycompany/app/";
     private static PrintWriter out;
     public static void generateHtmlContent(PrintWriter o) {
         out = o;
     }
-
-    public static void generateHtmlFromFile(String s) {
+    
+    /*
+     * from a html file generate content of web
+     * return false if file path do not exist
+     */
+    public static boolean generateHtmlFromFile(String s) {
         try {
             // Read HTML content from file
             BufferedReader reader = new BufferedReader(new FileReader(s));
@@ -28,8 +28,10 @@ public class ReserveHistory {
                 out.println(line);
             }
             reader.close();
+            return true;
         } catch (IOException e) {
             generateErrorPage();
+            return false;
         }
     }
 
@@ -60,7 +62,7 @@ public class ReserveHistory {
         out.println("<body>");
         out.println("<h1>All Commits</h1>");
     
-        if (commitFiles != null) {
+        if (commitFiles != null && commitFiles.length > 0) {
             Arrays.sort(commitFiles);
     
             for (File commitFile : commitFiles) {
@@ -91,6 +93,11 @@ public class ReserveHistory {
 
     public static void writeJsonToHtml(String ID, String time, String buildLog) {
         try {
+
+            File commitsDir = new File(path + "commits");
+            if (!commitsDir.exists()) {
+                commitsDir.mkdirs();
+            }
 
             int fileNum = 1;
 
@@ -127,5 +134,7 @@ public class ReserveHistory {
             e.printStackTrace();
         }
     }
+
+    
     
 }

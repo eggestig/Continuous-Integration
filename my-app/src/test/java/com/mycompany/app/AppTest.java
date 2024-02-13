@@ -1,12 +1,14 @@
 package com.mycompany.app;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -203,4 +205,6 @@ public class AppTest {
         System.out.println("assembleResult(failureMethod): " + assembleResult);
         assertEquals("Test unsuccessful assembler", assembleResult, GHCommitState.FAILURE);
     }
+
+
 }
