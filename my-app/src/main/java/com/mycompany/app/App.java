@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
@@ -85,8 +86,19 @@ public class App extends AbstractHandler
                 System.out.println("Exception occurred while cloning repo");
                 e.printStackTrace();
             }
+
         }
-        response.getWriter().println("CI job done");
+        PrintWriter out = response.getWriter();
+
+        ReserveHistory.generateHtmlContent(out);
+        if ("/".equals(target)) {
+        // Check the requested path
+            ReserveHistory.showAllCommit();
+        }else if (target.startsWith("/commit")) {
+            // Extract commit number from the path
+            int commitNumber = Integer.parseInt(target.substring("/commit".length()));
+            ReserveHistory.serveCommitContent(commitNumber);
+        } else ReserveHistory.generateErrorPage();
     }
 
     public static void cloneRepo(String URI, String branch) throws GitAPIException, IOException {

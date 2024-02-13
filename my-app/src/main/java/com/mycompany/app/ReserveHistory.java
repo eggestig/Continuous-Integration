@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class ReserveHistory {
     //need to change base on your computer
-    private static String path = "./my-app/src/main/java/com/mycompany/app/";
+    private static String path = "../my-app/src/main/java/com/mycompany/app/";
     private static PrintWriter out;
     public static void generateHtmlContent(PrintWriter o) {
         out = o;
