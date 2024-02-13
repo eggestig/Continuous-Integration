@@ -37,6 +37,11 @@ public class AppTest {
     private final String CloneDirectoryPath = System.getProperty("user.dir") + "/../tempRepo"; // '/my-app/../tempRepo'
     private final String Branch = "assessment";
 
+    private final String BuildSuccessDirectoryPath = System.getProperty("user.dir") + "/../testBuildSuccess";
+    private final String BuildFailDirectoryPath = System.getProperty("user.dir") + "/../testBuildFailure";
+    private static final String BUILD_SUCCESS = "BUILD SUCCESS";
+    private static final String BUILD_FAILURE = "BUILD FAILURE";
+
     /**
      * Test commit status for pre-defined JSON Node
      */
@@ -134,5 +139,25 @@ public class AppTest {
         assertTrue("Cloned repo branch exists, and is valid",
         Branch.equals(git.getRepository().getBranch()));
     }
+    }
+
+    /**
+     * Tests the projectBuilder method on a buildable maven skeleton project 
+     * found under Continuos_Integration/testBuildSuccess
+     */
+    @Test
+    public void testProjectBuilderSuccess() {
+        String buildResult = App.projectBuilder(BuildSuccessDirectoryPath);
+        assertEquals("Test successful build", buildResult, BUILD_SUCCESS);
+    }
+
+     /**
+     * Tests the projectBuilder method on a none buildable maven skeleton project 
+     * found under Continuos_Integration/testBuildFailure
+     */
+    @Test
+    public void testProjectBuilderFailure() {
+        String buildResult = App.projectBuilder(BuildFailDirectoryPath);
+        assertEquals("Test unsuccessful build", buildResult, BUILD_FAILURE);
     }
 }
