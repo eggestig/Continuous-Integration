@@ -11,6 +11,7 @@ import java.util.Arrays;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 /**
  * Class for managing commit history and generating HTML content with commit
  * information.

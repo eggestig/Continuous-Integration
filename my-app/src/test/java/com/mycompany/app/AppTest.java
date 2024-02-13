@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+
 /**
  * Unit test for simple App.
  */
@@ -40,8 +41,6 @@ public class AppTest {
 
     private final String BuildSuccessDirectoryPath = System.getProperty("user.dir") + "/../testBuildSuccess";
     private final String BuildFailDirectoryPath = System.getProperty("user.dir") + "/../testBuildFailure";
-    private static final String BUILD_SUCCESS = "BUILD SUCCESS";
-    private static final String BUILD_FAILURE = "BUILD FAILURE";
 
     /**
      * Test setting commit status for a valid payload.
