@@ -21,6 +21,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.junit.Test;
+import org.kohsuke.github.GHCommitState;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -53,7 +54,7 @@ public class AppTest {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(payload);
 
-        assertTrue(App.setCommitStatus(jsonNode, "SUCCESS"));
+        assertTrue(App.setCommitStatus(jsonNode, GHCommitState.SUCCESS, "TEST"));
     }
 
     @Test
@@ -151,8 +152,8 @@ public class AppTest {
      */
     @Test
     public void testProjectBuilderSuccess() {
-        String buildResult = App.projectBuilder(BuildSuccessDirectoryPath);
-        assertEquals("Test successful build", buildResult, BUILD_SUCCESS);
+        GHCommitState buildResult = App.projectBuilder(BuildSuccessDirectoryPath);
+        assertEquals("Test successful build", buildResult, GHCommitState.SUCCESS);
     }
 
      /**
@@ -161,8 +162,50 @@ public class AppTest {
      */
     @Test
     public void testProjectBuilderFailure() {
-        String buildResult = App.projectBuilder(BuildFailDirectoryPath);
-        assertEquals("Test unsuccessful build", buildResult, BUILD_FAILURE);
+        GHCommitState buildResult = App.projectBuilder(BuildFailDirectoryPath);
+        assertEquals("Test unsuccessful build", buildResult, GHCommitState.FAILURE);
+    }
+
+    /**
+     * Tests the projectTester method on a buildable maven skeleton project 
+     * found under Continuos_Integration/testBuildSuccess
+     */
+    @Test
+    public void testProjectTesterSuccess() {
+        GHCommitState testResult = App.projectTester(BuildSuccessDirectoryPath);
+        assertEquals("Test successful tester", testResult, GHCommitState.SUCCESS);
+    }
+
+     /**
+     * Tests the projectTester method on a none buildable maven skeleton project 
+     * found under Continuos_Integration/testBuildFailure
+     */
+    @Test
+    public void testProjectTesterFailure() {
+        GHCommitState testResult = App.projectTester(BuildFailDirectoryPath);
+        assertEquals("Test unsuccessful tester", testResult, GHCommitState.FAILURE);
+    }
+    
+    /**
+     * Tests the projectAssembler method on a buildable maven skeleton project 
+     * found under Continuos_Integration/testBuildSuccess
+     */
+    @Test
+    public void testProjectAssemblerSuccess() {
+        GHCommitState assembleResult = App.projectAssembler(BuildSuccessDirectoryPath);
+        System.out.println("assembleResult(SuccessMethod): " + assembleResult);
+        assertEquals("Test successful assembler", assembleResult, GHCommitState.SUCCESS);
+    }
+
+     /**
+     * Tests the projectAssembler method on a none buildable maven skeleton project 
+     * found under Continuos_Integration/testBuildFailure
+     */
+    @Test
+    public void testProjectAssemblerFailure() {
+        GHCommitState assembleResult = App.projectAssembler(BuildFailDirectoryPath);
+        System.out.println("assembleResult(failureMethod): " + assembleResult);
+        assertEquals("Test unsuccessful assembler", assembleResult, GHCommitState.FAILURE);
     }
 
     //TO DO: add test get json file
