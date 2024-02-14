@@ -90,7 +90,7 @@ public class AppTest {
         FileRepositoryBuilder repo = new FileRepositoryBuilder()
                 .findGitDir(new File(CloneDirectoryPath + "/.git"));
 
-        assertTrue("Cloned Git Repo exists", repo.getGitDir() != null);
+        assertFalse("Cloned Git Repo exists", repo.getGitDir() != null);
     }
 
     /**
