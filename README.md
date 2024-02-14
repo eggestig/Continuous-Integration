@@ -66,6 +66,11 @@ brew install gh
 
 ### Henrik Åkesson
 
+- Pair-programmed notification feature and set Commit Status method with Robert Skoglund.
+- Developed unit test for assuring correctness of setCommitStatus method.
+- Added environment variables for accessing authentication token (AUTH_TOKEN_ENV) and port number (PORT) to enhance security and configuration flexibility.
+- Added code documentation according to best practises to uphold readability.
+
 ### Robin Eggestig
 - Created the github project - Along with rulesets for disallowing merges/commits to main via the following rules:
   - at least 2 approving reviews.
