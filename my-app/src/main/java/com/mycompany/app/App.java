@@ -206,7 +206,7 @@ public class App extends AbstractHandler
             System.out.println("Captured Output:\n" + output);
             System.out.println("Exit Code: " + exitCode);
 
-            if (output.contains(BUILD_SUCCESS)) {
+            if (output.substring(output.lastIndexOf("BUILD ")).contains(BUILD_SUCCESS)) {
                 buildResult = GHCommitState.SUCCESS;
             }
 
@@ -324,7 +324,7 @@ public class App extends AbstractHandler
             System.out.println("Exit Code: " + exitCode);
 
             // Build fails if atleast one test fails
-            if (output.contains(BUILD_SUCCESS)) {
+            if (output.substring(output.lastIndexOf("BUILD ")).contains(BUILD_SUCCESS)) {
                 buildResult = GHCommitState.SUCCESS;
 
             }
@@ -360,7 +360,7 @@ public class App extends AbstractHandler
             System.out.println("Exit Code: " + exitCode);
 
             // Build fails if atleast one test fails
-            if (output.contains(BUILD_SUCCESS)) {
+            if (output.substring(output.lastIndexOf("BUILD ")).contains(BUILD_SUCCESS)) {
                 buildResult = GHCommitState.SUCCESS;
             }
 
