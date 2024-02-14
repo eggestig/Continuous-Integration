@@ -26,6 +26,10 @@ Achieved state: performing - the team is working effectively and efficiently. Th
 
 ## Installation
 
+### Versions
+* Java: 11.0.21 (OpenJDK)
+* Apache Maven: 3.6.3
+
 Clone the repo and install maven/java and set you java version to 11.0 if not already done so. You can check with the mvn -V command once you've installed maven.
 
 For Ubuntu:
@@ -60,6 +64,17 @@ $ sudo ln -sfn /usr/local/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaV
 $ export JAVA_HOME=`/usr/libexec/java_home -v 11.0`
 ```
 
+## Add authentication token
+
+One need to manually add the authentication by adding a file '.env' inside the my-app directory with the following contents:
+
+```
+AUTH_TOKEN_ENV="<your GitHub personal token with repoistory permission>"
+PORT=8016
+```
+
+
+
 ## Build
 
 To build, you need to cd into the my-app folder and run mvn. However the pom.xml settings file for Maven is outside this folder, so it's recommended to use the following command while located in the project root (i.e. DD2480):
@@ -76,10 +91,26 @@ To run the project, like above with building, we recommend being in the project 
 (cd my-app/ && java -jar target/my-app-1.0-SNAPSHOT-jar-with-dependencies.jar)
 ```
 
-### issue#14
 
-#### GitHub CLI installation
-brew install gh
+## View browsable JavaDocs
+
+To view browsable JavaDocs, run following command in root:
+
+```
+mvn javadoc:javadoc
+```
+
+The docs are available in HTML form in the drectory below. One can drag-and-drop into their respective browser to view.
+
+```
+Continuous-Integration/my-app/target/site/apidocs/
+```
+
+## How to view commit history
+
+To view commit build history, open: http://localhost:8016/
+
+If ngrok server is up and running, use URL provided.
 
 
 ## Statement of Contributions
