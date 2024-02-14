@@ -107,6 +107,11 @@ brew install gh
 ### Anton Sederlin
 
 ### Tsz Ho Wat
+- Pair-programmed in keep commit history with Anton
+- Create ReserveHistory.java, it can list all the history commit with a url and each commit have a unique url show the commit detail,this history persists even if the server is rebooted.
+- Create ReserveHistoryTest.java, it test all the main function in ReserveHistory.java
+- Add documentation in all public function for ReserveHistory.java
+- Conducted reviews and helped merge the program
 
 ### Robert Skoglund
 - Pair-programmed notification feature and setCommit function with Henrik
