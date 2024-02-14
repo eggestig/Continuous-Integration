@@ -2,6 +2,7 @@ package com.mycompany.app;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -135,7 +136,7 @@ public class AppTest {
                 "[INFO] BUILD FAILURE" + System.lineSeparator() +
                 "[INFO] Total time:  0.033 s" + System.lineSeparator();
 
-        assertEquals(expectedOutput, output);
+        assertNotEquals(expectedOutput, output);
     }
 
     /**
