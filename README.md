@@ -87,6 +87,17 @@ brew install gh
 ### Henrik Åkesson
 
 ### Robin Eggestig
+- Created the github project - Along with rulesets for disallowing merges/commits to main via the following rules:
+  - at least 2 approving reviews.
+  - 3 successful checks (Build, Test, and Assemble).
+  - No direct commit to main (Must be a pull request).
+- Created maven project skeleton.
+- Implemented smallest-java-ci with our skeleton.
+- Implemented the `cloneRepo` method.
+- Implemented the test and assemble methods based on the build method implemented by Anton.
+- Implemented test(s) for said implemented code above.
+- Debugged and fiddled with configurations, including the pom.xml file.
+- Pair-programmed different issues partially.
 
 ### Anton Sederlin
 
