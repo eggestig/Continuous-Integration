@@ -31,8 +31,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 
 /** 
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
+ A small implementation of a continuous integration CI server. This CI server will 
+ only contain the core features of continuous integration.
 */
 public class App extends AbstractHandler
 {   
@@ -55,8 +55,8 @@ public class App extends AbstractHandler
      * @param baseRequest The base request object.
      * @param request The HTTP servlet request.
      * @param response The HTTP servlet response.
-     * @throws IOException
-     * @throws ServletException
+     * @throws IOException server error
+     * @throws ServletException server error
      */
     public void handle(String target,
             Request baseRequest,
@@ -138,10 +138,10 @@ public class App extends AbstractHandler
     }
     /**
      * Clones the repository specified by URI and branch to a local directory.
-     * @param URI
-     * @param branch
-     * @throws GitAPIException
-     * @throws IOException
+     * @param URI the repo uri from where the webHook was triggered.
+     * @param branch the branch where the most recent commit was made
+     * @throws GitAPIException server error
+     * @throws IOException server error
      */
     public static void cloneRepo(String URI, String branch) throws GitAPIException, IOException {
         System.out.println("Deleting directory " + URI + "...");
@@ -377,7 +377,7 @@ public class App extends AbstractHandler
      * Starts the Continuous Integration (CI) server.
      * 
      * @param args The command-line arguments.
-     * @throws Exception
+     * @throws Exception server error
      */
     public static void main(String[] args) throws Exception {
         System.out.println("Waiting for a push event to trigger the Github webHook...");

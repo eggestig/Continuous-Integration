@@ -30,8 +30,8 @@ public class ReserveHistory {
 
     /**
      * Generate HTML content from a file.
-     * 
      * @param s Path to the HTML file.
+     * @return returns true if HTML file is created successfully
      */
     public static boolean generateHtmlFromFile(String s) {
         try {
