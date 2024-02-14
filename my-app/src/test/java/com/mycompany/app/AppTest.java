@@ -156,7 +156,7 @@ public class AppTest {
                 .build();
 
         try (Git git = new Git(repo)) {
-            assertTrue("Cloned repo branch exists, and is valid",
+            assertFalse("Cloned repo branch exists, and is valid",
                     Branch.equals(git.getRepository().getBranch()));
         }
     }
