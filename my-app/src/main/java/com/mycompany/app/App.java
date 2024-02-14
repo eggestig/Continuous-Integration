@@ -105,14 +105,22 @@ public class App extends AbstractHandler
                 setCommitStatus(jsonNode, packageStatus, "BUILD: " + packageStatus, CONTEXT_BUILD);
 
                 // TEST
-                GHCommitState testStatus = projectTester(CloneDirectoryPath);
-                setCommitStatus(jsonNode, testStatus, "TEST: " + testStatus, CONTEXT_TEST);
+                GHCommitState testStatus = GHCommitState.FAILURE;
+                if(packageStatus == GHCommitState.SUCCESS) {
+                    testStatus = projectTester(CloneDirectoryPath);
+                    setCommitStatus(jsonNode, testStatus, "TEST: " + testStatus, CONTEXT_TEST);
+                } else {
+                    setCommitStatus(jsonNode, testStatus, "TEST: " + testStatus, CONTEXT_TEST);
+                }
 
                 // ASSEMBLE
-                GHCommitState assembleStatus = projectAssembler(CloneDirectoryPath);
-
-                // Set commit status
-                setCommitStatus(jsonNode, assembleStatus, "ASSEMBLE: " + testStatus, CONTEXT_ASSEMBLY);
+                GHCommitState assembleStatus = GHCommitState.FAILURE;
+                if(packageStatus == GHCommitState.SUCCESS && testStatus == GHCommitState.SUCCESS) {
+                    assembleStatus = projectAssembler(CloneDirectoryPath);
+                    setCommitStatus(jsonNode, assembleStatus, "ASSEMBLE: " + assembleStatus, CONTEXT_ASSEMBLY);
+                } else {
+                    setCommitStatus(jsonNode, assembleStatus, "ASSEMBLE: " + assembleStatus, CONTEXT_ASSEMBLY);
+                }
 
                 //Write the JSON content to a file
                 ReserveHistory.writeJsonToHtml(commitID,timestamp,buildLog);
