@@ -8,33 +8,32 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 /**
  * Class for managing commit history and generating HTML content with commit
  * information.
  */
 public class ReserveHistory {
-    private static String path = "../my-app/src/main/java/com/mycompany/app/";
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static String path = "../my-app/src/main/java/com/mycompany/app/";
     private static PrintWriter out;
+
 
     /**
      * Set the PrintWriter for generating HTML content.
      * @param o PrintWriter object.
+
      */
     public static void generateHtmlContent(PrintWriter o) {
         out = o;
     }
+
 
     /**
      * Generate HTML content from a file.
      * 
      * @param s Path to the HTML file.
      */
-    public static void generateHtmlFromFile(String s) {
+    public static boolean generateHtmlFromFile(String s) {
         try {
             // Read HTML content from file
             BufferedReader reader = new BufferedReader(new FileReader(s));
@@ -43,10 +42,13 @@ public class ReserveHistory {
                 out.println(line);
             }
             reader.close();
+            return true;
         } catch (IOException e) {
             generateErrorPage();
+            return false;
         }
     }
+
 
     /**
      * Serve commit content by generating HTML from a commit file.
@@ -57,12 +59,21 @@ public class ReserveHistory {
         String commitFilePath = path + "commits/commit" + commitName + ".html";
         generateHtmlFromFile(commitFilePath);
     }
-
-    /**
-     * Generate an error page by reading HTML content from an error file.
+    
+    /*
+     * generate the error page
      */
-    public static void generateErrorPage() {
-        generateHtmlFromFile(path + "error.html");
+    public static void generateErrorPage(){
+        out.println("<!DOCTYPE html>");
+        out.println("<html>");
+        out.println("<head>");
+        out.println("    <title>Error Page</title>");
+        out.println("</head>");
+        out.println("<body>");
+        out.println("    <h1>Error</h1>");
+        out.println("    <p>The requested commit file does not exist or there was an error.</p>");
+        out.println("</body>");
+        out.println("</html>");
     }
 
     /**
@@ -77,7 +88,8 @@ public class ReserveHistory {
         out.println("<body>");
         out.println("<h1>All Commits</h1>");
 
-        if (commitFiles != null) {
+    
+        if (commitFiles != null && commitFiles.length > 0) {
             Arrays.sort(commitFiles);
 
             for (File commitFile : commitFiles) {
@@ -102,47 +114,11 @@ public class ReserveHistory {
         out.println("</html>");
     }
 
-    /**
-     * Write JSON node content to a file.
-     * 
-     * @param jsonNode JSON node to write.
-     */
-    public static void writeJsonToFile(JsonNode jsonNode) {
-        try {
-            // Define the file path
-            String filePath = path + "jsonFiles/payload.json";
 
-            // Create FileWriter with append mode (change to false if you want to overwrite
-            // the file)
-            FileWriter fileWriter = new FileWriter(filePath, true);
-
-            // Write JSON content to the file
-            objectMapper.writeValue(fileWriter, jsonNode);
-
-            // Close the FileWriter
-            fileWriter.close();
-
-            System.out.println("JSON content written to file: " + filePath);
-
-            System.out.println("Generating HTML file...");
-
-            // writeJsonToHtml(jsonNode);
-
-        } catch (IOException e) {
-            System.out.println("Exception occurred while writing JSON to file");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Check if a file exists.
-     * 
-     * @param filePath Path to the file.
-     * @return True if the file exists, false otherwise.
-     */
     private static boolean fileExists(String filePath) {
         return new File(filePath).exists();
     }
+
 
     /**
      * Write JSON node content to an HTML file.
@@ -150,9 +126,15 @@ public class ReserveHistory {
      * @param ID       Commit ID.
      * @param time     Timestamp.
      * @param buildLog Build log content.
+
      */
     public static void writeJsonToHtml(String ID, String time, String buildLog) {
         try {
+
+            File commitsDir = new File(path + "commits");
+            if (!commitsDir.exists()) {
+                commitsDir.mkdirs();
+            }
 
             int fileNum = 1;
 
@@ -189,5 +171,4 @@ public class ReserveHistory {
             e.printStackTrace();
         }
     }
-
 }
