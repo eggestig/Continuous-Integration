@@ -142,8 +142,6 @@ public class App extends AbstractHandler
             String fileName = target.substring("/commit".length());
             ReserveHistory.serveCommitContent(fileName);
         }else ReserveHistory.generateErrorPage();
-
-        response.getWriter().println("CI job done");
         
     }
     /**
@@ -216,7 +214,7 @@ public class App extends AbstractHandler
             System.out.println("Captured Output:\n" + output);
             System.out.println("Exit Code: " + exitCode);
 
-            if (output.contains(BUILD_SUCCESS)) {
+            if (output.substring(output.lastIndexOf("BUILD ")).contains(BUILD_SUCCESS)) {
                 buildResult = GHCommitState.SUCCESS;
             }
 
@@ -334,7 +332,7 @@ public class App extends AbstractHandler
             System.out.println("Exit Code: " + exitCode);
 
             // Build fails if atleast one test fails
-            if (output.contains(BUILD_SUCCESS)) {
+            if (output.substring(output.lastIndexOf("BUILD ")).contains(BUILD_SUCCESS)) {
                 buildResult = GHCommitState.SUCCESS;
 
             }
@@ -370,7 +368,7 @@ public class App extends AbstractHandler
             System.out.println("Exit Code: " + exitCode);
 
             // Build fails if atleast one test fails
-            if (output.contains(BUILD_SUCCESS)) {
+            if (output.substring(output.lastIndexOf("BUILD ")).contains(BUILD_SUCCESS)) {
                 buildResult = GHCommitState.SUCCESS;
             }
 
@@ -393,8 +391,7 @@ public class App extends AbstractHandler
         System.out.println("Waiting for a push event to trigger the Github webHook...");
         int port = 0;
         Dotenv dotenv = Dotenv.load();
-        System.out.println(dotenv.get("PORT"));
-        port = dotenv.get("PORT").compareTo("8080") == 0 ? 8080 : 0;
+        port = dotenv.get("PORT").compareTo("8016") == 0 ? 8016 : 0;
 
         System.out.println("Try to run on port: " + port + " from directory: " + System.getProperty("user.dir"));
         
